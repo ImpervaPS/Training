@@ -7,8 +7,6 @@ Public Learning Material
 Check the restored database:
 
 ![](_attachments/Pasted%20image%2020231017172731.png)
-=======
-![[attachment/Pasted image 20231017170610.png]]
 
 Query scripts:
 1-Stored Procedure
@@ -40,4 +38,5 @@ END;
 EXEC sp_SelectTop10_Orders;
 ```
 
-You should be able to find it under schema dbo:
+You should be able to find the newly created stored_procedure under schema dbo.
+![](_attachments/Pasted%20image%2020231017173250.png)
