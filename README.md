@@ -41,7 +41,8 @@ EXEC sp_SelectTop10_Orders;
 
 You should be able to find the newly created stored_procedure under schema dbo.
 ![](_attachments/Pasted%20image%2020231017173250.png)
-or you can run the query manually:
+
+Or you can run the query manually:
 ```
 -- The command replaced by stored procedure
 SELECT TOP 10 * FROM Sales.Orders o ;
