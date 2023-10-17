@@ -5,7 +5,11 @@ Public Learning Material
 
 
 Check the restored database:
+<<<<<<< HEAD
 ![](_attachments/Pasted%20image%2020231017172731.png)
+=======
+![[attachment/Pasted image 20231017170610.png]]
+>>>>>>> origin/main
 Query scripts:
 1-Stored Procedure
 ```
@@ -37,3 +41,7 @@ EXEC sp_SelectTop10_Orders;
 ```
 
 You should be able to find it under schema dbo:
+<<<<<<< HEAD
+=======
+![[Pasted image 20231017170808.png]]
+>>>>>>> origin/main
