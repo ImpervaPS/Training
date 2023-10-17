@@ -89,3 +89,52 @@ CREATE TABLE dbo.NewTable (
 DROP TABLE dbo.NewTable; 
 ```
 
+### Views
+
+create example table users:
+```
+-- Insert some sample data
+INSERT INTO Users (UserName, Age) VALUES 
+('John', 28),
+('Jane', 32),
+('Doe', 30),
+('Alice', 29),
+('Bob', 35);
+```
+
+create views:
+
+```
+CREATE VIEW UserInformationView AS
+SELECT 
+    UserID,
+    UserName,
+    Age,
+    (CASE WHEN Age BETWEEN 0 AND 10 THEN 'Child' 
+          WHEN Age BETWEEN 11 AND 20 THEN 'Teenager' 
+          WHEN Age BETWEEN 21 AND 30 THEN 'Young Adult' 
+          WHEN Age BETWEEN 31 AND 40 THEN 'Adult' 
+          ELSE 'Senior' END) AS AgeGroup,
+    (CASE WHEN Age % 2 = 0 THEN 'Even Age' 
+          ELSE 'Odd Age' END) AS AgeParity,
+    (CASE WHEN LEN(UserName) % 2 = 0 THEN 'Even Name Length' 
+          ELSE 'Odd Name Length' END) AS NameParity,
+    (CASE WHEN Age < 30 THEN 'Below 30' 
+          WHEN Age >= 30 AND Age < 40 THEN 'Between 30 and 40' 
+          ELSE 'Above 40' END) AS AgeBracket,
+    (CASE WHEN Age > 30 AND LEN(UserName) > 3 THEN 'Age > 30 AND Name Length > 3' 
+          ELSE 'Other' END) AS ComplexCriterion
+FROM Users 
+WHERE Age > 25 
+AND UserName LIKE 'J%' 
+AND (Age % 2 = 0 OR LEN(UserName) % 2 = 0) 
+AND UserID IN (SELECT UserID FROM Users WHERE Age BETWEEN 28 AND 35);
+```
+
+![](_attachments/Pasted%20image%2020231017175728.png)
+
+Check the view result:
+
+```
+SELECT * FROM UserInformationView
+```
