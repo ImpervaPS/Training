@@ -9,7 +9,9 @@ Check the restored database:
 ![](_attachments/Pasted%20image%2020231017172731.png)
 
 Query scripts:
+
 1-Stored Procedure
+
 ```
 -- Switch Database
 USE WideWorldImporters;
