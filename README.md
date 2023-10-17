@@ -1,5 +1,6 @@
-# Training
-Public Learning Material
+# DBF-Training
+
+## 1-Queries
 
 - MsSQL 2019 Database wideworldimporters example, you can find it here: <https://github.com/Microsoft/sql-server-samples/releases/tag/wide-world-importers-v1.0>
 
@@ -7,11 +8,9 @@ Public Learning Material
 Check the restored database:
 
 ![](_attachments/Pasted%20image%2020231017172731.png)
+### Stored Procedure
 
-Query scripts:
-
-1-Stored Procedure
-
+Query scripts: 
 ```
 -- Switch Database
 USE WideWorldImporters;
@@ -42,3 +41,8 @@ EXEC sp_SelectTop10_Orders;
 
 You should be able to find the newly created stored_procedure under schema dbo.
 ![](_attachments/Pasted%20image%2020231017173250.png)
+or you can run the query manually:
+```
+-- The command replaced by stored procedure
+SELECT TOP 10 * FROM Sales.Orders o ;
+```
