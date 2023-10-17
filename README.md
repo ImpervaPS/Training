@@ -5,7 +5,7 @@ Public Learning Material
 
 
 Check the restored database:
-![[Pasted image 20231017170610.png]]
+![[attachment/Pasted image 20231017170610.png]]
 Query scripts:
 1-Stored Procedure
 ```
