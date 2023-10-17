@@ -5,7 +5,7 @@ Public Learning Material
 
 
 Check the restored database:
-![[Pasted image 20231017170610.png]]
+![](_attachments/Pasted%20image%2020231017172731.png)
 Query scripts:
 1-Stored Procedure
 ```
@@ -37,4 +37,3 @@ EXEC sp_SelectTop10_Orders;
 ```
 
 You should be able to find it under schema dbo:
-![[Pasted image 20231017170808.png]]
