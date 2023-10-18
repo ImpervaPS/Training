@@ -138,3 +138,68 @@ Check the view result:
 ```
 SELECT * FROM UserInformationView
 ```
+
+### City_name as example
+
+```
+-- Create the world_city table with schema dbo
+USE WideWorldImporters;
+
+CREATE TABLE dbo.world_city (
+    city_id INT PRIMARY KEY IDENTITY(1,1), -- Automatically incrementing unique ID
+    city_name NVARCHAR(255) NOT NULL
+);
+
+-- Insert 50 famous cities into world_city table
+INSERT INTO dbo.world_city (city_name) VALUES
+('New York'),
+('London'),
+('Paris'),
+('Tokyo'),
+('Los Angeles'),
+('Chicago'),
+('Houston'),
+('Miami'),
+('San Francisco'),
+('Toronto'),
+('Sydney'),
+('Melbourne'),
+('Rio de Janeiro'),
+('Sao Paulo'),
+('Mexico City'),
+('Shanghai'),
+('Beijing'),
+('Mumbai'),
+('Bangkok'),
+('Singapore'),
+('Hong Kong'),
+('Seoul'),
+('Amsterdam'),
+('Dubai'),
+('Cairo'),
+('Johannesburg'),
+('Moscow'),
+('Berlin'),
+('Madrid'),
+('Rome'),
+('Istanbul'),
+('Lisbon'),
+('Copenhagen'),
+('Vienna'),
+('Budapest'),
+('Prague'),
+('Warsaw'),
+('Buenos Aires'),
+('Lima'),
+('Bogota'),
+('Montreal'),
+('Vancouver'),
+('Jakarta'),
+('Manila'),
+('Kuala Lumpur'),
+('Nairobi'),
+('Lagos'),
+('Karachi'),
+('Dhaka');
+```
+
