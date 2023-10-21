@@ -15,7 +15,7 @@ sonard
 ### GCP
 #### VM instance
 - [ ] Machine Type is e2-standard-8
-![](_attachments/Pasted%20image%2020231020192929.png | width=400)
+![width=400](_attachments/Pasted%20image%2020231020192929.png)
 
 ![](_attachments/Pasted%20image%2020231020193229.png)
 ![](_attachments/Pasted%20image%2020231020203916.png)
