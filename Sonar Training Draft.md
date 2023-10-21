@@ -1,4 +1,4 @@
-For Training Only! Not For Production!f
+For Training Only! Not For Production!
 ## Diagram
 ### AWS
 ![](_attachments/Pasted%20image%2020231017181757.png)
@@ -15,10 +15,10 @@ sonard
 ### GCP
 #### VM instance
 - [ ] Machine Type is e2-standard-8
-![500](_attachments/Pasted%20image%2020231020192929.png)
+![](_attachments/Pasted%20image%2020231020192929.png| width=400)
 
 ![](_attachments/Pasted%20image%2020231020193229.png)
-![400](_attachments/Pasted%20image%2020231020203916.png)
+![](_attachments/Pasted%20image%2020231020203916.png)
 
 - [ ] Check the firewall that allow ==port 8443 & 22== open to your IP.
 #### GCP Services Accounts
