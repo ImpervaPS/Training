@@ -44,7 +44,7 @@ Next, save the key as json format and place it into the folder:
 			"Sid": "PublicReadGetObject",
 			"Effect": "Allow",
 			"Principal": {
-				"AWS": "arn:aws:iam::563059278517:root"
+				"AWS": "arn:aws:iam::56305927xxxx:root"
 			},
 			"Action": "s3:GetObject",
 			"Resource": "arn:aws:s3:::impervaps/ftp-downloads/*"
@@ -53,7 +53,7 @@ Next, save the key as json format and place it into the folder:
 }
 
 ```
-Replace "AWS": "arn:aws:iam::563059278517:root" with " * "
+Replace "AWS": "arn:aws:iam::56305927xxxx:root" with " * "
 
 then in gcp, run the command such as:
 ```
