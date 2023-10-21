@@ -40,7 +40,8 @@ And save it into the folder path:
 chmod 644 xxx.json
 ```
 ## Federation
-Using any cloud to install one Sonar Hub(warehouse).
+Using any cloud to install one Sonar Hub(warehouse), and configure static public ip for the federation with agentless gateways.
+
 ### Download installation from FTP-Downloads
 
 Ask admin to unblock the public access of the bucket, and the policy change to all accounts.
@@ -259,4 +260,8 @@ Make sure you can visit it through public ip/ DNS hostname of the **agentless-gw
 ## Playbook
 
 ## MongoDB
+
+Install MongoDB Enterprise version 4.4
+https://www.mongodb.com/docs/v4.4/tutorial/install-mongodb-enterprise-on-red-hat/
+
 ## Pipelines
