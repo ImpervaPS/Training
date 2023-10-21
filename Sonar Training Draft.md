@@ -1,4 +1,4 @@
-For Training Only! Not For Production!
+For Training Only! Not For Production!f
 ## Diagram
 ### AWS
 ![](_attachments/Pasted%20image%2020231017181757.png)
