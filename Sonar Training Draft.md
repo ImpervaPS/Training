@@ -13,12 +13,12 @@ sonargd
 sonard
 ## Onboarding
 ### GCP
-#### VM instance
+#### 1-VM instance
 - [ ] Machine Type is e2-standard-8
 ![width=400](_attachments/Pasted%20image%2020231020192929.png)
 
 ![](_attachments/Pasted%20image%2020231020193229.png)
-![width=400](_attachments/Pasted%20image%2020231020203916.png)
+![](_attachments/Pasted%20image%2020231020203916.png)
 
 - [ ] Check the firewall that allow ==port 8443 & 22== open to your IP.
 #### GCP Services Accounts
@@ -32,40 +32,30 @@ Make sure the following roles granted to the Service Account.
 You can check/edit the roles:
 ![](_attachments/Pasted%20image%2020231021125754.png)
 
-Next, save the key as json format and place it into the folder:
+Next, save the key as json format
 ![](_attachments/Pasted%20image%2020231021131640.png)
-### FileDownload from FTP-Downloads
-
+And save it into the folder path:
 ```
-{
-	"Version": "2012-10-17",
-	"Statement": [
-		{
-			"Sid": "PublicReadGetObject",
-			"Effect": "Allow",
-			"Principal": {
-				"AWS": "arn:aws:iam::56305927xxxx:root"
-			},
-			"Action": "s3:GetObject",
-			"Resource": "arn:aws:s3:::impervaps/ftp-downloads/*"
-		}
-	]
-}
-
+/opt/jsonar/local/credentials/xxx.json
+chmod 644 xxx.json
 ```
-Replace "AWS": "arn:aws:iam::56305927xxxx:root" with " * "
+## Federation
+Using any cloud to install one Sonar Hub(warehouse).
+### Download installation from FTP-Downloads
 
-then in gcp, run the command such as:
+Ask admin to unblock the public access of the bucket, and the policy change to all accounts.
+
+In terminal, run the command such as:
 ```
 curl -o sonar4.13.tar.gz http://impervaps.s3-website-ap-southeast-1.amazonaws.com/ftp-downloads/jsonar-4.13.0.10.0.tar.gz
 
 sudo tar -xvf sonar4.13.tar.gz -C /opt/
 sudo chmod a+rx /opt/jsonar/
 ```
-after downloading, block public access again and change the 'Principal' back.
+After downloading, block public access again and change the 'Principal' back to root.
 
-start the installation:
-```
+Start the installation:
+```sh
 [impervaps_lake@instance-2 opt]$ sudo /opt/jsonar/apps/4.13.0.10.0/bin/sonarg-setup 
 
 Enter the full path to the JSONAR_DATADIR directory.
@@ -239,7 +229,7 @@ curl https://localhost:8443 -kv
 ```
 
 No need to disable selinux or configure the firewall rules.
-Configure the Firewall rules
+Configure the Firewall rules (just in case)
 ```
 sudo firewall-cmd --zone=public --add-port=8443/tcp --add-port=22/tcp --permanent
 sudo firewall-cmd --reload
@@ -251,9 +241,11 @@ Stop the sonar services before shutdown:
 sudo /opt/jsonar/apps/4.13.0.10.0/bin/sonarg-setup services stop
 ```
 
-Make sure you can visit it through public ip/ DNS hostname
+Make sure you can visit it through public ip/ DNS hostname of the **agentless-gw** we just installed.
 ![](_attachments/Pasted%20image%2020231020204354.png)
-### Templates
+
+**Conduct the same process in aws/azure.**
+## Templates
 ### IAM
 
 #### Service Endpoints
