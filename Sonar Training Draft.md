@@ -18,7 +18,7 @@ sonard
 ![width=400](_attachments/Pasted%20image%2020231020192929.png)
 
 ![](_attachments/Pasted%20image%2020231020193229.png)
-![](_attachments/Pasted%20image%2020231020203916.png)
+![width=400](_attachments/Pasted%20image%2020231020203916.png)
 
 - [ ] Check the firewall that allow ==port 8443 & 22== open to your IP.
 #### GCP Services Accounts
