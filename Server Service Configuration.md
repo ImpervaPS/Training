@@ -4,7 +4,7 @@ check the link <https://computingforgeeks.com/install-and-configure-ftp-server-o
 ## Resize Disk
 
 Check the current disk space
-```
+```sh
 [user@dsfhub413 ~]$ df -h
 Filesystem             Size  Used Avail Use% Mounted on
 devtmpfs                16G     0   16G   0% /dev
@@ -22,7 +22,7 @@ tmpfs                  3.2G  4.0K  3.2G   1% /run/user/1000
 Clearly we don't have enough space in root. So the plan is to allocate 140G from /dev/mapper/rhel-home to /dev/mapper/rhel-root.
 
 Run the command using root in this order:
-```
+```sh
 --01-backup the /home folder
 tar -cvf /tmp/home.tar /home
 
@@ -37,7 +37,7 @@ umount: /home: target is busy.
 ```
 
 if you see above error, run the command:
-```
+```sh
 [root@dsfhub413 /]# fuser -km /home/
 /home:                2469m  2483c  2545c  2551c
 Connection to 192.168.x.x closed.
@@ -45,7 +45,7 @@ Connection to 192.168.x.x closed.
 
 You need to login using the root account again.
 run the umount command again:
-```
+```sh
 [root@dsfhub413 tmp]# df -h
 Filesystem             Size  Used Avail Use% Mounted on
 devtmpfs                16G     0   16G   0% /dev
@@ -60,7 +60,7 @@ tmpfs                  3.2G     0  3.2G   0% /run/user/0
 ```
 
 the /home folder is gone.
-```
+```sh
 [root@dsfhub413 tmp]# lvremove /dev/mapper/rhel-home
 Do you really want to remove active logical volume rhel/home? [y/n]: y
   Logical volume "home" successfully removed.
@@ -84,7 +84,7 @@ data blocks changed from 18350080 to 55050240
 
 We will add 22GB to the /home folder. We arrived at this by calculating 163GB minus 140GB, which equals 23GB. However, to be on the safe side, we're allocating 1GB less.
 
-```
+```sh
 [root@dsfhub413 tmp]# lvcreate -L 22G -n /dev/mapper/rhel-home
   Logical volume "home" created.
 [root@dsfhub413 tmp]# mkfs.xfs /dev/mapper/rhel-home

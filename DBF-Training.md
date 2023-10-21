@@ -7,7 +7,7 @@
 
 Check the restored database:
 
-![](_attachments/Pasted%20image%2020231017172731.png)
+![400](_attachments/Pasted%20image%2020231017172731.png)
 ### Stored Procedure
 
 Query scripts: 
@@ -40,7 +40,7 @@ EXEC sp_SelectTop10_Orders;
 ```
 
 You should be able to find the newly created stored_procedure under schema dbo.
-![](_attachments/Pasted%20image%2020231017173250.png)
+![40](_attachments/Pasted%20image%2020231017173250.png)
 
 Or you can run the query manually:
 ```
