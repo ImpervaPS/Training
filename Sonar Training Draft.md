@@ -261,7 +261,130 @@ Make sure you can visit it through public ip/ DNS hostname of the **agentless-gw
 
 ## MongoDB
 
-Install MongoDB Enterprise version 4.4
+### Install MongoDB Enterprise version 4.4
 https://www.mongodb.com/docs/v4.4/tutorial/install-mongodb-enterprise-on-red-hat/
+
+```bash
+vi /etc/yum.repos.d/mongodb-enterprise-4.4.repo
+
+[mongodb-enterprise-4.4]
+name=MongoDB Enterprise Repository
+baseurl=https://repo.mongodb.com/yum/redhat/$releasever/mongodb-enterprise/4.4/$basearch/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-4.4.asc
+
+sudo yum install -y mongodb-enterprise
+
+sudo systemctl start mongod
+sudo systemctl enable mongod
+
+mongo
+```
+
+configure the /etc/mongod.conf to enable the bind ip to 0.0.0.0/0 to allow remote connection.
+
+follow the official documentation for audit logging.
+<https://docs.imperva.com/bundle/onboarding-databases-to-sonar-reference-guide/page/212012395.html>
+
+Or you can refer to mongodb for more details.
+https://www.mongodb.com/docs/v4.4/tutorial/configure-auditing/
+
+configure the mongod.conf to enable auditing:
+```
+security:
+  authorization: enabled
+  
+auditLog:
+  destination: file
+  format: JSON
+  path: /var/lib/mongo/auditLog.json
+```
+Log rotation part(optional):
+using the default user role 
+
+```sh
+## run mongo command to start session
+[root@mvp ~]# mongo
+MongoDB shell version v4.4.25
+connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("aa020135-8105-4835-b5c8-f4b409b2b61b") }
+MongoDB server version: 4.4.25
+MongoDB Enterprise > use admin;
+switched to db admin
+
+## run command to creat user that has root role
+db.createUser({
+   user: "root",
+   pwd: "default",
+   roles: ["root"]
+});
+
+## exit mongo and restart mongod
+systemctl restart mongod
+
+## Should you receive the error as shown below:
+MongoDB shell version v4.4.25
+connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
+Error: couldn't connect to server 127.0.0.1:27017, connection attempt failed: SocketException: Error connecting to 127.0.0.1:27017 :: caused by :: Connection refused :
+connect@src/mongo/shell/mongo.js:374:17
+
+## try this command to solve:
+
+ls -l /tmp/mongodb-27017.sock
+## If the file exists, you should remove it and restart mongod
+sudo rm /tmp/mongodb-27017.sock
+sudo systemctl restart mongod
+```
+
+### rsyslog configuration
+
+refer to the link: <https://docs.imperva.com/bundle/onboarding-databases-to-sonar-reference-guide/page/212012395.html>
+
+```
+sudo vi /etc/rsyslog.d/mongodb_audit_forward.conf
+```
+Add the following lines, and replace the necessary parameter values:
+
+- **target** - the Agentless Gateway host IP 
+- **File** - the full path of audit log file, could be "/var/lib/mongo/auditLog.json"
+- If you are not using the default Server Port, replace "**27017**" in the code below with your port value.
+```
+$MaxMessageSize 18000000
+ 
+module(load="imfile")
+input(type="imfile" Tag="jsonaraudit:" File="<audit log path>/auditLog.json" ruleset="pRuleset")
+  
+template(name="mongo_rawmsg" type="list") {
+    constant(value="{ ")
+    constant(value="\"Server Port\":\"27017\"")
+    constant(value=" }")
+    constant(value="PR3N0RM")     
+    property(name="rawmsg")
+}
+  
+ruleset(name="pRuleset") {
+action(type="omfwd"
+     keepalive="on"
+     protocol="tcp"
+     target="<Agentless-Gateway-IP>"
+     port="10501"
+     template="mongo_rawmsg")
+stop
+}
+```
+
+Run this command to verify the rsyslog configuration file is correct:
+```
+rsyslogd -N1
+```
+Restart the rsyslog service:
+```
+sudo systemctl restart rsyslog
+```
+
+### Onboarding to DSFHub
+
+
 
 ## Pipelines
