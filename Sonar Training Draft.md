@@ -273,24 +273,31 @@ baseurl=https://repo.mongodb.com/yum/redhat/$releasever/mongodb-enterprise/4.4/$
 gpgcheck=1
 enabled=1
 gpgkey=https://www.mongodb.org/static/pgp/server-4.4.asc
+```
 
+```sh
 sudo yum install -y mongodb-enterprise
-
 sudo systemctl start mongod
 sudo systemctl enable mongod
-
+## Next, execute the command to initiate the db session.
 mongo
 ```
 
-configure the /etc/mongod.conf to enable the bind ip to 0.0.0.0/0 to allow remote connection.
+Configure the /etc/mongod.conf to enable the bind ip to 0.0.0.0 to allow remote connection.
+```
+# network interfaces
+net:
+  port: 27017
+  bindIp: 0.0.0.0  # Enter 0.0.0.0,:: to bind to all IPv4 and IPv6 addresses or, alternatively, use the net.bindIpAll setting.
+```
 
-follow the official documentation for audit logging.
+Follow the official documentation for audit logging.
 <https://docs.imperva.com/bundle/onboarding-databases-to-sonar-reference-guide/page/212012395.html>
 
 Or you can refer to mongodb for more details.
 https://www.mongodb.com/docs/v4.4/tutorial/configure-auditing/
 
-configure the mongod.conf to enable auditing:
+Configure the mongod.conf to enable auditing:
 ```
 security:
   authorization: enabled
@@ -301,7 +308,7 @@ auditLog:
   path: /var/lib/mongo/auditLog.json
 ```
 Log rotation part(optional):
-using the default user role 
+Using the default admin user to create user that has root role
 
 ```sh
 ## run mongo command to start session
@@ -335,8 +342,29 @@ ls -l /tmp/mongodb-27017.sock
 ## If the file exists, you should remove it and restart mongod
 sudo rm /tmp/mongodb-27017.sock
 sudo systemctl restart mongod
-```
 
+## login using root role and run the log rotation command
+[root@mvp mongo]# mongo -u root -p
+MongoDB shell version v4.4.25
+Enter password: 
+connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("19570a18-9a97-49d8-8669-97febe92fbd6") }
+MongoDB server version: 4.4.25
+---
+The server generated these startup warnings when booting: 
+        2023-10-22T10:22:42.206+08:00: /sys/kernel/mm/transparent_hugepage/enabled is 'always'. We suggest setting it to 'never'
+        2023-10-22T10:22:42.206+08:00: /sys/kernel/mm/transparent_hugepage/defrag is 'always'. We suggest setting it to 'never'
+---
+MongoDB Enterprise > db.adminCommand( { logRotate: "audit", comment: "Rotating audit log" } )
+{ "ok" : 1 }
+MongoDB Enterprise > exit
+bye
+```
+Now check the result of your auditLog.json file in the path /var/lib/mongo
+```
+-rw------- 1 mongod mongod 67126 Oct 22 11:19 auditLog.json.2023-10-22T03-19-40
+-rw------- 1 mongod mongod     0 Oct 22 11:19 auditLog.json
+```
 ### rsyslog configuration
 
 refer to the link: <https://docs.imperva.com/bundle/onboarding-databases-to-sonar-reference-guide/page/212012395.html>
@@ -382,9 +410,50 @@ Restart the rsyslog service:
 ```
 sudo systemctl restart rsyslog
 ```
-
 ### Onboarding to DSFHub
 
+asset display name convention:
 
+import assets using spreadsheet;
 
+log viewer in actions.log
+![](_attachments/Pasted%20image%2020231022142043.png)
+key words to filter the logs: import_actions
+![](_attachments/Pasted%20image%2020231022142159.png)
+
+Enable the audit
+- USC
+- ![](_attachments/Pasted%20image%2020231022142458.png)
+- or through 'asset details', click 'Connect Gateway' then check the playbook history in the pop-up windows.
+- ![](_attachments/Pasted%20image%2020231022142712.png)
+- ![](_attachments/Pasted%20image%2020231022142842.png)
+Now generate some traffic using `mongo`:
+```
+MongoDB Enterprise > show dbs
+```
+
+Use `tcpdump` to trace the log files
+```bash
+[root@mvp ~]# tcpdump -i any port 10501 and host 192.168.43.67 -nn
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes
+14:33:17.556176 IP 192.168.43.72.53020 > 192.168.43.67.10501: Flags [P.], seq 2630361006:2630361620, ack 1121687932, win 229, options [nop,nop,TS val 452446545 ecr 2541268608], length 614
+14:33:17.556259 IP 192.168.43.67.10501 > 192.168.43.72.53020: Flags [.], ack 614, win 246, options [nop,nop,TS val 2541328655 ecr 452446545], length 0
+^C
+2 packets captured
+2 packets received by filter
+0 packets dropped by kernel
+```
+
+Use the `nc` command to verify that the network connection is working.
+
+```
+[root@mvp ~]# nc -zv 192.168.43.67 8443
+Ncat: Version 7.50 ( https://nmap.org/ncat )
+Ncat: Connected to 192.168.43.67:8443.
+Ncat: 0 bytes sent, 0 bytes received in 0.01 seconds.
+```
+
+And check the syslog folder, you should see the new log file
+![](_attachments/Pasted%20image%2020231022144223.png)
 ## Pipelines
