@@ -1,4 +1,6 @@
 For Training Only! Not For Production!
+Installation files download link
+http://impervaps.s3-website-ap-southeast-1.amazonaws.com/ftp-downloads/
 ## Diagram
 ### AWS
 ![](_attachments/Pasted%20image%2020231017181757.png)
@@ -20,7 +22,12 @@ sonard
 ![](_attachments/Pasted%20image%2020231020193229.png)
 ![](_attachments/Pasted%20image%2020231020203916.png)
 
-- [ ] Check the firewall that allow ==port 8443 & 22== open to your IP.
+- [ ] Check the firewall that allow ==port 8443 & 22== open to your current IP.
+
+```
+## check your current IP address
+curl ifconfig.me
+```
 #### GCP Services Accounts
 > DSF supports the below authentication mechanisms to access Google Cloud resources:
 - **Service Account:** If you opt to use "service_account" authentication mechanism, a JSON-formatted key file needs to be generated. This file holds the credentials that the Agentless Gateway uses to access logs from the Pub/Sub subscription. Ensure that the key file is copied to the Agentless Gateway host and it is owned by the "sonarw" user.  To create a service account key, please see [Creating and managing service account keys](https://cloud.google.com/iam/docs/creating-managing-service-account-keys). **A service account is identified by its email address, which is unique to the account.**
@@ -28,8 +35,13 @@ sonard
 
 We choose the Service Account. This is widely used.
 Make sure the following roles granted to the Service Account.
-![](_attachments/Pasted%20image%2020231021113918.png)
-You can check/edit the roles:
+
+> 1 Create service account
+
+![](_attachments/Pasted%20image%2020231028200702.png)
+Skip 'Grant users access to this service account (optional)'
+![](_attachments/Pasted%20image%2020231028200751.png)
+You can check/edit the roles in the IAM.
 ![](_attachments/Pasted%20image%2020231021125754.png)
 
 Next, save the key as json format
@@ -412,9 +424,7 @@ sudo systemctl restart rsyslog
 ```
 ### Onboarding to DSFHub
 
-asset display name convention:
-
-import assets using spreadsheet;
+Import assets using spreadsheet, the hard way.
 
 log viewer in actions.log
 ![](_attachments/Pasted%20image%2020231022142043.png)
@@ -432,7 +442,7 @@ Now generate some traffic using `mongo`:
 MongoDB Enterprise > show dbs
 ```
 
-Use `tcpdump` to trace the log files
+Use `tcpdump` to trace connection
 ```bash
 [root@mvp ~]# tcpdump -i any port 10501 and host 192.168.43.67 -nn
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
@@ -456,4 +466,309 @@ Ncat: 0 bytes sent, 0 bytes received in 0.01 seconds.
 
 And check the syslog folder, you should see the new log file
 ![](_attachments/Pasted%20image%2020231022144223.png)
+
+## Oracle DB 19c
+
+the installation files you can find here:
+
+installation steps
+download the preinstall rpm package
+
+```bash
+curl -o oracle-database-preinstall-19c-1.0-1.el7.x86_64.rpm https://yum.oracle.com/repo/OracleLinux/OL7/latest/x86_64/getPackage/oracle-database-preinstall-19c-1.0-1.el7.x86_64.rpm
+
+## or use the rpm in s3 bucket
+curl -o oracle-database-preinstall-19c-1.0-1.el7.x86_64.rpm http://impervaps.s3-website-ap-southeast-1.amazonaws.com/ftp-downloads/training_installation_db/oracle_19c/oracle-database-preinstall-19c-1.0-1.el7.x86_64.rpm
+
+sudo yum -y localinstall oracle-database-preinstall-19c-1.0-1.el7.x86_64.rpm
+```
+
+Refer to the official link to download the rpm or download directly from the s3 bucket.
+
+```bash
+curl -o oracle-database-ee-19c-1.0-1.x86_64.rpm http://impervaps.s3-website-ap-southeast-1.amazonaws.com/ftp-downloads/training_installation_db/oracle_19c/oracle-database-ee-19c-1.0-1.x86_64.rpm
+sudo yum -y oracle-database-ee-19c-1.0-1.x86_64.rpm
+```
+
+Initiate the DB
+```
+[INFO] Oracle home installed successfully and ready to be configured.
+To configure a sample Oracle Database you can execute the following service configuration script as root: /etc/init.d/oracledb_ORCLCDB-19c configure
+```
+
+Error you may encounter:
+```
+[root@dbs ~]#  /etc/init.d/oracledb_ORCLCDB-19c configure
+Configuring Oracle Database ORCLCDB.
+[FATAL] [DBT-06103] The port (1,521) is already in use.
+   ACTION: Specify a free port.
+
+Database configuration failed.
+```
+
+You need to add the ip/hostname in the /etc/hosts then run again above command to initiate.
+```
+192.168.43.70 dbs.hcl dbs
+```
+
+Now you will see logs similar to the ones below.
+```
+[ 2023-09-04 21:14:02.677 CST ] Database creation complete. For details check the logfiles at:
+ /opt/oracle/cfgtoollogs/dbca/ORCLCDB.
+Database Information:
+Global Database Name:ORCLCDB
+System Identifier(SID):ORCLCDB
+
+Look at the log file "/opt/oracle/cfgtoollogs/dbca/ORCLCDB/ORCLCDB.log" for further details.
+
+Database configuration completed successfully. The passwords were auto generated, you must change them by connecting to the database using 'sqlplus / as sysdba' as the oracle user.
+```
+
+configure the bash_profile of oracle account
+```
+sudo su
+su oracle
+vi ~/.bash_profile
+## append these lines to the profile:
+export ORACLE_HOME=/opt/oracle/product/19c/dbhome_1
+export PATH=$PATH:/opt/oracle/product/19c/dbhome_1/bin
+export ORACLE_SID=ORCLCDB
+
+## then source the profile
+source ~/.bash_profile
+
+## Create PLUGGABLE DATABASE
+
+## Create the pdb file named playground
+mkdir /opt/oracle/oradata/ORCLCDB/playground
+## (optional) check the ownership of this folder. make sure it's oracle.oinstall
+chown oracle.oinstall opt/oracle/oradata/ORCLCDB/playground
+
+## running the sqlplus
+[oracle@dbs ~]$ sqlplus /nolog
+
+SQL*Plus: Release 19.0.0.0.0 - Production on Mon Oct 23 08:43:00 2023
+Version 19.3.0.0.0
+
+Copyright (c) 1982, 2019, Oracle.  All rights reserved.
+
+SQL> conn sys/sys as sysdba
+Connected to an idle instance.
+SQL> startup
+
+## update the password
+SQL> alter user system identified by system; 
+```
+
+Create PDBs, make sure we are in CDB$ROOT instance.
+```
+SQL> show con_name
+
+CON_NAME
+------------------------------
+CDB$ROOT
+
+## Create PDB using the pdbseed file and create the ADMIN USER superdemo
+
+SQL> CREATE PLUGGABLE DATABASE playground ADMIN USER superdemo IDENTIFIED BY superdemo FILE_NAME_CONVERT = ('/opt/oracle/oradata/ORCLCDB/pdbseed/', '/opt/oracle/oradata/ORCLCDB/playground/');
+
+## Show connection and change it to PDB playground
+
+SQL> alter session set container=playground;
+SQL> alter database open;
+SQL> show pdbs;
+    CON_ID CON_NAME           OPEN MODE  RESTRICTED
+---------- ------------------------------ ---------- ----------
+     4 PLAYGROUND             READ WRITE NO
+```
+
+Create sample table for query
+```
+GRANT CREATE TABLE TO superdemo;
+ALTER USER superdemo QUOTA UNLIMITED ON system;
+
+CREATE TABLE cities (
+    city_id NUMBER PRIMARY KEY,
+    city_name VARCHAR2(100)
+);
+
+INSERT INTO cities (city_id, city_name) VALUES (1, 'New York');
+INSERT INTO cities (city_id, city_name) VALUES (2, 'London');
+INSERT INTO cities (city_id, city_name) VALUES (3, 'Paris');
+```
+
+**Onboarding an Oracle Multitenant Container Database**
+And configure the audit policy and audit user 
+```
+SQL> ALTER SESSION SET CONTAINER = CDB$ROOT;
+##Create Audit Pull User:
+CREATE USER c##auditmanager IDENTIFIED BY "P@ssw0rd";
+GRANT CREATE SESSION TO c##auditmanager;
+
+GRANT AUDIT_VIEWER TO c##auditmanager;
+ALTER USER c##auditmanager SET container_data=all CONTAINER = CURRENT;
+GRANT SELECT ON sys.v_$pdbs TO c##auditmanager;
+GRANT SELECT ON V_$DATABASE TO c##auditmanager;
+
+##Create the Audit Management User
+
+CREATE USER c##auditpolicy IDENTIFIED BY "P@ssw0rd";
+GRANT CREATE SESSION TO c##auditpolicy;
+GRANT AUDIT_ADMIN TO c##auditpolicy CONTAINER=ALL;
+
+GRANT SELECT ON DBA_TABLES TO c##auditpolicy;
+GRANT SELECT ON V_$DATABASE TO c##auditpolicy;
+GRANT SELECT ON V_$PARAMETER to c##auditpolicy;
+```
+
+Check the auditing mode:
+```
+## True means 'pure unified', false means 'mixed mode'
+SQL> SELECT VALUE FROM V$OPTION WHERE PARAMETER = 'Unified Auditing';
+
+VALUE
+----------------------------------------------------------------
+FALSE
+
+## we will configure the auditing to mixed mode. Run SQL command as sys.
+SQL> ALTER SYSTEM SET audit_trail=DB,EXTENDED scope=SPFILE;
+ALTER SYSTEM SET audit_sys_operations=true scope=SPFILE;
+AUDIT CONTEXT NAMESPACE USERENV ATTRIBUTES db_name, service_name;
+## restart the database
+SHUTDOWN IMMEDIATE;
+STARTUP;
+
+## Show parameters to verify
+SQL> SHOW PARAMETERS audit;
+audit_trail     string DB, EXTENDED
+
+SQL> show parameters audit_sys_operations;
+NAME                     TYPE    VALUE
+------------------------------------ ----------- ------------------------------
+audit_sys_operations             boolean     TRUE
+```
+
+Configure the audit policy
+run this SQL command in the specific PDB.
+```
+CREATE AUDIT POLICY all_actions_pol ACTIONS ALL ONLY TOPLEVEL;
+AUDIT POLICY all_actions_pol;
+SELECT POLICY_NAME FROM audit_unified_enabled_policies;
+```
+
+Onboarding the oracle
+Template or the USC.
+
+Use 'asset details' to 'Connect Gateway' and select the =='audit_type'== to 'multi-unified'.
+Check the log files:
+```
+tail -f -n 200 /opt/jsonar/logs/gateway/cloud/odbc/oracle_unified_multi/sonargateway.log
+```
+
+Possible Error message:
+2023-10-23 07:40:20,724 ERROR Asset sh-training-oracle-19c:mff3080:1521: source UNIFIED_AUDIT_TRAIL_0: ODBC query exception: std::exception
+
+Check the service name, should be the $root, i.e. orclcdb.
 ## Pipelines
+
+target?
+
+```
+## find the bind_ip
+[root@dsfhub413 ~]# locate sonard.conf
+/opt/jsonar/apps/4.13.0.10.0/etc/sonar/sonard.conf
+/opt/jsonar/local/sonarw/sonard.conf
+```
+
+edit the one in sonarw
+$JSONAR_LOCALDIR/sonarw
+Add the bind_ip=0.0.0.0
+then restart service
+`systemctl restart sonard`
+
+insert some data into mongodb
+```
+use training;
+db.inventory.insertMany([
+   { item: "journal", qty: 25, size: { h: 14, w: 21, uom: "cm" }, status: "A" },
+   { item: "notebook", qty: 50, size: { h: 8.5, w: 11, uom: "in" }, status: "A" },
+   { item: "paper", qty: 100, size: { h: 8.5, w: 11, uom: "in" }, status: "D" },
+   { item: "planner", qty: 75, size: { h: 22.85, w: 30, uom: "cm" }, status: "D" },
+   { item: "postcard", qty: 45, size: { h: 10, w: 15.25, uom: "cm" }, status: "A" }
+]);
+show dbs;
+show collections;
+## select the first 2 documents
+db.inventory.find().limit(2).pretty()
+{ _id: ObjectId("653741495a05e27d8fd07aa3"),
+  item: 'journal',
+  qty: 25,
+  size: { h: 14, w: 21, uom: 'cm' },
+  status: 'A' }
+{ _id: ObjectId("653741495a05e27d8fd07aa4"),
+  item: 'notebook',
+  qty: 50,
+  size: { h: 8.5, w: 11, uom: 'in' },
+  status: 'A' }
+
+## find/update/delete with condition
+
+## delete with condition
+condition: {item: "notebook"}
+db.inventory.deleteOne({ item: "notebook" })
+
+##If you intend to delete all documents matching the condition, you can use the deleteMany() method instead.
+db.inventory.deleteMany({ status: "A" })
+
+## Condition is case sensitive. so make no mistake when deleteMany().
+db.inventory.deleteMany({status: "d"})
+{ acknowledged: true, deletedCount: 0 }
+db.inventory.deleteMany({status: "D"})
+{ acknowledged: true, deletedCount: 2 }
+```
+add more operations to update:
+```
+## suppose you want to update the stauts:
+db.inventory.updateOne({"item":"paper"}, {$set: {"status":"B"}})
+```
+
+more complex method:
+```
+db.inventory.find({ "status": { $in: ["A", "B"] } })
+db.inventory.find({ "qty": { $gt: 75 } })
+db.inventory.find({$or:[{"status":"B"},{"qty":{$lt:75}}]})
+```
+
+Now let's switch to the Sonar Hub Analyzer:
+![](_attachments/Pasted%20image%2020231024150005.png)
+
+How to practice?
+
+Add stage : count
+To count by ID:
+
+Create pipeline:
+start with match:
+And more complex : add multiple $and condition to the pipeline.
+```
+$and: [{"Server Type" : {$ne: "ORACLE" }},{"Database Name" : "admin"}] 
+```
+
+Period Start
+Between, it only affects the first date. Edit the second date to make a change.
+
+Or the relative to when the query runs
+
+```
+## You may want the query to filter based on dates relative to when the query runs
+$$LMRM_NOW for the time the query runs
+$$LMRM_NOW-10DAYS  + or – days (even if one day)
+$$LMRM_NOW-60000 means 60 seconds (number is in milliseconds) 
+
+"Period Start" : {$gt: "$$LMRM_NOW-5DAYS"}
+1 Hour
+{$gte: "$$LMRM_NOW-36000000"}
+10 Minutes
+{$gte: "$$LMRM_NOW-600000"}
+```
+
