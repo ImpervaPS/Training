@@ -122,7 +122,7 @@ Configure the firewall, add your IP to it.
 Testing the connection using DBeaver
 ![](_attachments/Pasted%20image%2020231028204924.png)
 Make sure the 'Test Connection' succeeds before moving on.
-==Create DB and tables, generate some queries.==
+**Create DB and tables, generate some queries.**
 ### DSF Cloud Account
 
 > DSF supports the below authentication mechanisms to access Google Cloud resources:
@@ -257,10 +257,10 @@ pubsub_subscription: `projects/e-centaur-394913/subscriptions/gcp-demo-mysql`
 <https://cloud.google.com/pubsub/docs/reference/service_apis_overview>
 #### GCP MySQL
 Template:
-==asset_id==: `my-gcp-project:location:my-gcp-mysql-db`
-==asset_display_name==: `my_gcp_mysql_display_name`
+asset_id: `my-gcp-project:location:my-gcp-mysql-db`
+asset_display_name: `my_gcp_mysql_display_name`
 auth_mechanism: `password`
-==logs_destination_asset_id==: `projects/my-gcp-project/subscriptions/my-mysql-subscription`
+logs_destination_asset_id: `projects/my-gcp-project/subscriptions/my-mysql-subscription`
 server_port: `3306`
 database_name: `mysql`
 
@@ -269,7 +269,7 @@ username:
 password:
 
 Example:
-==logs_destination_asset_id==: `projects/e-centaur-394913/subscriptions/gcp-demo-mysql`
+logs_destination_asset_id: `projects/e-centaur-394913/subscriptions/gcp-demo-mysql`
 
 #### Onboarding
 
