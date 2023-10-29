@@ -1,6 +1,4 @@
-For Training Only! Not For Production!
-Installation files download link
-http://impervaps.s3-website-ap-southeast-1.amazonaws.com/ftp-downloads/
+**For Training Only! Not For Production!**
 ## Diagram
 ### AWS
 ![](_attachments/Pasted%20image%2020231017181757.png)
@@ -47,7 +45,6 @@ curl -o sonar4.13.tar.gz http://impervaps.s3-website-ap-southeast-1.amazonaws.co
 sudo tar -xvf sonar4.13.tar.gz -C /opt/
 sudo chmod a+rx /opt/jsonar/
 ```
-After downloading, block public access again and change the 'Principal' back to root.
 
 Start the installation:
 ```sh
@@ -77,7 +74,6 @@ Advanced Setup
 - Custom directory locations
 
 Configure advanced settings [y/N]: N
-
 ```
 
 Using this command to test the service start working on port 8443
@@ -308,15 +304,12 @@ And the log file path:
 `$JSONAR_LOGDIR/gateway/syslog/mysql_pubsub.log`
 
 
-## On-Prem
+## On-Prem or Self Managed Instance
 
-## Dashboard
+### MongoDB
 
-## Playbook
-
-## MongoDB
-
-### Install MongoDB Enterprise version 4.4
+OnPrem Database onboarding
+#### Install MongoDB Enterprise version 4.4
 https://www.mongodb.com/docs/v4.4/tutorial/install-mongodb-enterprise-on-red-hat/
 
 ```bash
@@ -420,7 +413,7 @@ Now check the result of your auditLog.json file in the path /var/lib/mongo
 -rw------- 1 mongod mongod 67126 Oct 22 11:19 auditLog.json.2023-10-22T03-19-40
 -rw------- 1 mongod mongod     0 Oct 22 11:19 auditLog.json
 ```
-### rsyslog configuration
+#### rsyslog configuration
 
 refer to the link: <https://docs.imperva.com/bundle/onboarding-databases-to-sonar-reference-guide/page/212012395.html>
 
@@ -465,7 +458,7 @@ Restart the rsyslog service:
 ```
 sudo systemctl restart rsyslog
 ```
-### Onboarding to DSFHub
+#### Onboarding to DSFHub
 
 Import assets using spreadsheet, the hard way.
 
@@ -510,12 +503,10 @@ Ncat: 0 bytes sent, 0 bytes received in 0.01 seconds.
 And check the syslog folder, you should see the new log file
 ![](_attachments/Pasted%20image%2020231022144223.png)
 
-## Oracle DB 19c
+### Oracle DB 19c
 
-the installation files you can find here:
-
-installation steps
-download the preinstall rpm package
+#### Install Oracle 19C
+Download the preinstall rpm package
 
 ```bash
 curl -o oracle-database-preinstall-19c-1.0-1.el7.x86_64.rpm https://yum.oracle.com/repo/OracleLinux/OL7/latest/x86_64/getPackage/oracle-database-preinstall-19c-1.0-1.el7.x86_64.rpm
@@ -567,7 +558,7 @@ Look at the log file "/opt/oracle/cfgtoollogs/dbca/ORCLCDB/ORCLCDB.log" for furt
 Database configuration completed successfully. The passwords were auto generated, you must change them by connecting to the database using 'sqlplus / as sysdba' as the oracle user.
 ```
 
-configure the bash_profile of oracle account
+Configure the bash_profile of oracle account
 ```
 sudo su
 su oracle
@@ -640,8 +631,8 @@ INSERT INTO cities (city_id, city_name) VALUES (2, 'London');
 INSERT INTO cities (city_id, city_name) VALUES (3, 'Paris');
 ```
 
-**Onboarding an Oracle Multitenant Container Database**
-And configure the audit policy and audit user 
+#### Audit Policy Configuration
+Configure the audit policy and audit user 
 ```
 SQL> ALTER SESSION SET CONTAINER = CDB$ROOT;
 ##Create Audit Pull User:
@@ -699,7 +690,7 @@ AUDIT POLICY all_actions_pol;
 SELECT POLICY_NAME FROM audit_unified_enabled_policies;
 ```
 
-Onboarding the oracle
+#### Onboarding the DB
 Template or the USC.
 
 Use 'asset details' to 'Connect Gateway' and select the =='audit_type'== to 'multi-unified'.
@@ -815,3 +806,4 @@ $$LMRM_NOW-60000 means 60 seconds (number is in milliseconds)
 {$gte: "$$LMRM_NOW-600000"}
 ```
 
+## Workflow
