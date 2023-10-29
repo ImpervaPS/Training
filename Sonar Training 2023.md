@@ -128,7 +128,7 @@ ${JSONAR_BASEDIR/bin/federated remote --authorized-keys-path /home/sonarw/.ssh/a
 ```
 
 
-## GCP CloudSQL
+## GCP CloudSQL MySQL
 
 ### GCP Cloud SQL Instance
 
@@ -252,23 +252,63 @@ GOTO Pub/Sub -> Topics, right click to create Subscriptions
 Subscription name: projects/e-centaur-394913/subscriptions/gcp-demo-mysql
 ![](_attachments/Pasted%20image%2020231029142005.png)
 Write down the subscription name: `projects/e-centaur-394913/subscriptions/gcp-demo-mysql` for later use.
-## AWS RDS
+## AWS RDS PostgreSQL
 
 We will simulate the customer environment by creating two accounts: one for AgentlessGW and the other for DB. Please ensure you have both accounts set up before proceeding.
-### RDS Postgresql instance
 
+### RDS PostgreSQL instance
+
+Create the DB Parameter:
+GOTO RDS > Parameter groups, create one that compatible with postgres15.
+Edit the parameters as shown in <https://docs.imperva.com/bundle/onboarding-databases-to-sonar-reference-guide/page/Amazon-RDS-for-PostgreSQL-Onboarding-Steps_212011772.html>
+
+Parameter Group: `training-audit-log`
+
+Before associating with RDS, check that the subnet has a public IGW. Once created, you can't modify this.
+Check the security group that has public access.
+
+Create the DB instance 
+- select 'parameter group' to the one you created.
+- In the option of 'Log exports', select 'PostgreSQL log'.
+
+Connect to the RDS using DBeaver.
+
+Create the role and extension to write log to logGroup
+```
+CREATE ROLE rds_pgaudit;
+## Reboot the DB instance.
+CREATE EXTENSION pgaudit;
+SHOW shared_preload_libraries;
+CREATE EXTENSION pgaudit;
+```
+
+Now create some fake data in DBeaver.
+```
+-- Create the transaction table
+CREATE TABLE transaction (
+    id SERIAL PRIMARY KEY,
+    dining_time TIMESTAMP,
+    guest_name VARCHAR(255),
+    person_number INT,
+    credit_card VARCHAR(19)  -- Typically, credit card numbers can be up to 19 digits
+);
+
+-- Insert sample data
+INSERT INTO transaction (dining_time, guest_name, person_number, credit_card) VALUES 
+('2023-10-26 12:00:00', 'John Doe', 2, '4111111111111111'), 
+('2023-10-26 12:30:00', 'Jane Smith', 4, '4444333322221111'),
+('2023-10-26 13:00:00', 'Sam Brown', 1, '5500005555111118'),
+('2023-10-26 13:30:00', 'Lucy Green', 3, '340000000000009'),
+('2023-10-26 14:00:00', 'Mike Blue', 2, '370000000000002');
+```
 
 ### AWS IAM roles
-Template & USC
 
-asset_id & server_ip & server_hostname: `arn:aws:iam::123456789003:role/some-test-role`
-
-server_port: `443`
-
-region: `ap-southeast-1`
 #### Create the IAM role/policy in AgentlessGW account:
 
-Create sts(Security Token Service) assuming role policy
+Create sts(Security Token Service) assuming role policy.
+policy name: `training-role-assuming-sts`
+
 ```
 {
     "Version": "2012-10-17",
@@ -282,13 +322,106 @@ Create sts(Security Token Service) assuming role policy
     ]
 }
 ```
+
+Create the IAM role
+
 Select the AWS service with EC2 use case.
 ![](_attachments/Pasted%20image%2020231029184252.png)
+Then select the policy you just created.
 
-#### Service Endpoints
+Edit Trusted entities policy in the **AgentlessGW account**:
+
+remote DB account id: `37425879xxxx`
+remote DB role name: `training-sts-role-assuming-auditing`
+
+```
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Principal": {
+				"Service": "ec2.amazonaws.com",
+				"AWS": "arn:aws:iam::37425879xxxx:role/training-sts-role-assuming-auditing"
+			},
+			"Action": "sts:AssumeRole"
+		}
+	]
+}
+```
+
+Assign the role to the Instance.
+![](_attachments/Pasted%20image%2020231029195621.png)
+#### Switch to DB account
+
+37425879xxxx is your DB account id.
+Create the log group and rds policy: training-rds-loggroup-audit
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "logs:DescribeLogGroups",
+                "rds:DescribeDBInstances",
+                "logs:DescribeLogGroups",
+                "logs:DescribeLogStreams",
+                "logs:FilterLogEvents",
+                "logs:GetLogEvents"
+            ],
+            "Resource": [
+                "arn:aws:logs:*:37425879xxxx:log-group:*:log-stream:*",
+                "arn:aws:rds:*:37425879xxxx:cluster:*",
+                "arn:aws:rds:*:37425879xxxx:db:*"
+            ]
+        }
+    ]
+}
+```
+Replace `37425879xxxx` with your DB account ID. 
+
+Create the IAM Role to assume the policy created earlier.
+
+IAM Role: `training-sts-role-assuming-auditing`
+Trusted entity type: `AWS Service`
+Use Case: `EC2`
+Policy: `training-rds-loggroup-audit`
+
+Edit Trusted entities policy:
+56305927xxxx is your AgentlessGW account id.
+```
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": "arn:aws:iam::56305927xxxx:role/training-audit-rds-loggroup"
+			},
+			"Action": "sts:AssumeRole"
+		}
+	]
+}
+```
+
+#### Template & USC
+IAM account - Cloud Account
+
+asset_id & server_ip & server_hostname: `arn:aws:iam::123456789003:role/some-test-role`
+
+the IAM role is the remote DB account ARN: `arn:aws:iam::37425879xxxx:role/training-sts-role-assuming-auditing`
+
+server_port: `443`
+
+region: `ap-southeast-1`
+
+#### Service Endpoints 
 <https://docs.aws.amazon.com/general/latest/gr/cwl_region.html>
 
-### AWS LogGroup
+
 ## Templates
 ### GCP CloudSQL MySQL
 
@@ -347,6 +480,16 @@ Service Name:
 And the log file path:
 `$JSONAR_LOGDIR/gateway/syslog/mysql_pubsub.log`
 
+### AWS RDS PostgreSQL
+Template and USC.
+
+parent_asset_id (for RDS) is IAM arn: `arn:aws:iam::374258798103:role/training-sts-role-assuming-auditing`
+
+parent_asset_id (for Log Group) is RDS arn: `arn:aws:rds:ap-southeast-1:374258798103:db:training-rds-pg15`
+
+asset_id & Server Ip & arn: `arn:aws:rds:ap-southeast-1:374258798103:db:training-rds-pg15`
+
+Server Host Name: `training-rds-pg15.ca65reriht8w.ap-southeast-1.rds.amazonaws.com`
 
 ## On-Prem or Self Managed Instance
 
@@ -749,8 +892,7 @@ Possible Error message:
 Check the service name, should be the $root, i.e. orclcdb.
 ## Pipelines
 
-target?
-
+Configure the MongoCompass
 ```
 ## find the bind_ip
 [root@dsfhub413 ~]# locate sonard.conf
@@ -761,7 +903,7 @@ target?
 edit the one in sonarw
 $JSONAR_LOCALDIR/sonarw
 Add the bind_ip=0.0.0.0
-then restart service
+Then restart service
 `systemctl restart sonard`
 
 insert some data into mongodb
@@ -851,3 +993,8 @@ $$LMRM_NOW-60000 means 60 seconds (number is in milliseconds)
 ```
 
 ## Workflow
+Event workflow
+
+Pipeline to aggregate the events -> Publish the pipeline -> Create workflow -> Generate tickets
+
+### Workflow User/Manager Role
