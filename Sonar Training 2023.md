@@ -266,7 +266,24 @@ asset_id & server_ip & server_hostname: `arn:aws:iam::123456789003:role/some-tes
 server_port: `443`
 
 region: `ap-southeast-1`
+#### Create the IAM role/policy in AgentlessGW account:
 
+Create sts(Security Token Service) assuming role policy
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "sts:AssumeRole",
+            "Resource": "*"
+        }
+    ]
+}
+```
+Select the AWS service with EC2 use case.
+![](_attachments/Pasted%20image%2020231029184252.png)
 
 #### Service Endpoints
 <https://docs.aws.amazon.com/general/latest/gr/cwl_region.html>
