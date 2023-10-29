@@ -1017,7 +1017,6 @@ use sonargd.instance
 ```
 
 ![](_attachments/Pasted%20image%2020231026133920.png)
-
 #### Create the Index
 
 Allow the CRUD.
@@ -1026,7 +1025,7 @@ Allow the CRUD.
 The trick to add the assignment to the mapping is to:
 open the joined collection and 
 ![](_attachments/Pasted%20image%2020231026145031.png)
-double click the assignment
+double click the assignment 
 ![](_attachments/Pasted%20image%2020231026145100.png)
 Now you get the correct the join condition:
 ![](_attachments/Pasted%20image%2020231026145134.png)
