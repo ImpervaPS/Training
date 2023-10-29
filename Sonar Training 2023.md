@@ -111,7 +111,21 @@ https://dbeaver.io/download/
 ## Federation
 Using any cloud to install one Sonar Hub(warehouse), and configure static public ip for the federation with agentless gateways, or you can use DNS.
 
-GOTO 
+Easy to setup:
+```bash
+$ sudo su 
+# source /etc/sysconfig/jsonar
+# $JSONAR_BASEDIR/bin/federated warehouse --new-remote <DSF-Hub-IP-or_FQDN> <Agentless-Gateway-IP-or-FQDN>
+
+Starting warehouse configuration.
+checking that <DSF-Hub> is not a remote
+connecting to <Agentless-Gateway>... 
+Cannot connect to <Agentless-Gateway>.  
+** WARNING: To finalize the setup you must run the following on the REMOTE <Agentless-Gateway>, as root : **
+source /etc/sysconfig/jsonar
+
+${JSONAR_BASEDIR/bin/federated remote --authorized-keys-path /home/sonarw/.ssh/authorized_keys' --key 'ssh-rsa'
+```
 
 
 ## GCP CloudSQL
@@ -239,12 +253,25 @@ Subscription name: projects/e-centaur-394913/subscriptions/gcp-demo-mysql
 ![](_attachments/Pasted%20image%2020231029142005.png)
 Write down the subscription name: `projects/e-centaur-394913/subscriptions/gcp-demo-mysql` for later use.
 ## AWS RDS
-### AWS IAM
+
+We will simulate the customer environment by creating two accounts: one for AgentlessGW and the other for DB. Please ensure you have both accounts set up before proceeding.
+### RDS Postgresql instance
+
+
+### AWS IAM roles
+Template & USC
+
+asset_id & server_ip & server_hostname: `arn:aws:iam::123456789003:role/some-test-role`
+
+server_port: `443`
+
+region: `ap-southeast-1`
+
 
 #### Service Endpoints
 <https://docs.aws.amazon.com/general/latest/gr/cwl_region.html>
 
-
+### AWS LogGroup
 ## Templates
 ### GCP CloudSQL MySQL
 
