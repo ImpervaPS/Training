@@ -143,11 +143,14 @@ Make sure the 'Test Connection' succeeds before moving on.
 In our example, we adopt the Service Account. This is widely used.
 Make sure the following roles granted to the Service Account.
 
-GOTO IAM, create service account
-![](_attachments/Pasted%20image%2020231028200702.png)
+GOTO IAM, create service account and assign these roles:
+`Pub/Sub Viewer`
+`Pub/Sub Subscriber`
+`Viewer`
+
 Skip 'Grant users access to this service account (optional)'
-![](_attachments/Pasted%20image%2020231028200751.png)
-You can check/edit the roles in the IAM.
+
+You can verify and edit the roles in IAM.
 ![](_attachments/Pasted%20image%2020231021125754.png)
 
 Next, create and save the key as json format.
