@@ -5,52 +5,37 @@ http://impervaps.s3-website-ap-southeast-1.amazonaws.com/ftp-downloads/
 ### AWS
 ![](_attachments/Pasted%20image%2020231017181757.png)
 ### Azure
+![](_attachments/Pasted%20image%2020231029162238.png)
 
 ### GCP
-
+![](_attachments/Pasted%20image%2020231029162403.png)
 
 ## Services
 
-sonargd
-sonard
-## Onboarding
-### GCP
-#### 1-VM instance
+## Basic Configuration
+### GCP VM Instance
+
 - [ ] Machine Type is e2-standard-8
+- [ ] Disk Space 240GB
+- [ ] Centos 8 Stream
 ![width=400](_attachments/Pasted%20image%2020231020192929.png)
 
 ![](_attachments/Pasted%20image%2020231020193229.png)
 ![](_attachments/Pasted%20image%2020231020203916.png)
 
 - [ ] Check the firewall that allow ==port 8443 & 22== open to your current IP.
+- [ ] Go to 'firewall' to configure
 
 ```
 ## check your current IP address
 curl ifconfig.me
 ```
-#### GCP Services Accounts
-> DSF supports the below authentication mechanisms to access Google Cloud resources:
-- **Service Account:** If you opt to use "service_account" authentication mechanism, a JSON-formatted key file needs to be generated. This file holds the credentials that the Agentless Gateway uses to access logs from the Pub/Sub subscription. Ensure that the key file is copied to the Agentless Gateway host and it is owned by the "sonarw" user.  To create a service account key, please see [Creating and managing service account keys](https://cloud.google.com/iam/docs/creating-managing-service-account-keys). **A service account is identified by its email address, which is unique to the account.**
-- **Default:** If you use "default" authentication mechanism, then attach the Service Account created above to the Google Cloud Agentless Gateway instance.
 
-We choose the Service Account. This is widely used.
-Make sure the following roles granted to the Service Account.
+### Install DBeaver
 
-> 1 Create service account
+Download and install it. We will use it to generate some queries.
+https://dbeaver.io/download/
 
-![](_attachments/Pasted%20image%2020231028200702.png)
-Skip 'Grant users access to this service account (optional)'
-![](_attachments/Pasted%20image%2020231028200751.png)
-You can check/edit the roles in the IAM.
-![](_attachments/Pasted%20image%2020231021125754.png)
-
-Next, save the key as json format
-![](_attachments/Pasted%20image%2020231021131640.png)
-And save it into the folder path:
-```
-/opt/jsonar/local/credentials/xxx.json
-chmod 644 xxx.json
-```
 ## Federation
 Using any cloud to install one Sonar Hub(warehouse), and configure static public ip for the federation with agentless gateways.
 
@@ -71,71 +56,7 @@ Start the installation:
 ```sh
 [impervaps_lake@instance-2 opt]$ sudo /opt/jsonar/apps/4.13.0.10.0/bin/sonarg-setup 
 
-Enter the full path to the JSONAR_DATADIR directory.
-**The sonarw user must be able to read and write to this directory
-Path [/opt/jsonar/data]: 
-
-Enter the full path to the JSONAR_LOGDIR directory.
-**The sonarw user must be able to read and write to this directory
-Path [/opt/jsonar/logs]: 
-
-Enter the full path to the JSONAR_LOCALDIR directory.
-**The sonarw user must be able to read and write to this directory
-Path [/opt/jsonar/local]: 
-
-Running sonarg-setup
-
-Starting initial setup
-To continue, please accept the end-user license agreement
---------------------------------------------------------------------------------------------------------------
-
-PROGRAM LICENSE AGREEMENT
-
----
---------------------------------------------------------------------------------------------------------------
-
-Please type "yes" or "no".
-Accept end-user license agreement? [yes/no]: yes
-EULA Accepted
-
-Group sonar does not exist.
-
-If you have a CENTRAL USERS/GROUP MANAGEMENT SYSTEM (like Active
-Directory or NIS), say NO here, create the group sonar in
-that system, then RUN this script AGAIN.
-
-Do you want to create it LOCALLY? [y/N]: y
-Adding system group: sonar
-
-User sonarw does not exist.
-
-If you have a CENTRAL USERS/GROUP MANAGEMENT SYSTEM (like Active
-Directory or NIS), say NO here, create the user sonarw in
-that system, then RUN this script AGAIN.
-
-Do you want to create it LOCALLY? [y/N]: y
-Adding system user: sonarw
-Updating user profile /home/sonarw/.bash_profile...
-
-User sonargd does not exist.
-
-If you have a CENTRAL USERS/GROUP MANAGEMENT SYSTEM (like Active
-Directory or NIS), say NO here, create the user sonargd in
-that system, then RUN this script AGAIN.
-
-Do you want to create it LOCALLY? [y/N]: y
-Adding system user: sonargd
-
-How would you like to enter the setup information?
-    [1]: Enter data manually
-    [2]: Use an encrypted file
-    [3]: exit
-Choice: (1, 2, 3): 1
-Entering data manually
-
-Initial Setup
-=============
-
+===========
 Enter a concise, descriptive, and unique display name for this machine.
 Display name [instance-2]: dsfgw413-gcp
 Is this a remote machine for a federated gateway system? [y/N]: y
@@ -146,26 +67,7 @@ IP address or FQDN [34.170.16.34.bc.googleusercontent.com]: dsfgw413-gcp.imperva
 Enter the IP Address or FQDN of this host. Sonar uses this IP/FQDN for communication between the DSF Hub and Agentless Gateways.
 IP address or FQDN [34.170.16.34.bc.googleusercontent.com]: dsfgw413-gcp.impervaps.com
 
-SonarW Setup
-============
-Passwords must be at least 6 characters in length, include a combination of letters, digits, and symbols, and not be based on a dictionary word or be otherwise trivial to guess.
-
-Enter the password for SonarW's admin user.
-Password for admin user (will not be shown): 
-Repeat for confirmation: 
-
-Enter the password for SonarW's sonargd user (used for the ETL process).
-Password for sonargd (will not be shown): 
-Repeat for confirmation: 
-
-Enter the password for the secAdmin user.
-Password for secAdmin (will not be shown): 
-Repeat for confirmation: 
-
-Enter the password for the default SonarG user, sonarg_user (used for DSF Portal access).
-Password for sonarg_user (will not be shown): 
-Repeat for confirmation: 
-
+===========
 Email Setup
 ===========
 Configure email settings [y/N]: N
@@ -179,58 +81,6 @@ Advanced Setup
 
 Configure advanced settings [y/N]: N
 
-Review Configurations
-=====================
-
-Please review the input values before accepting the following configuration:
-    -Passwords and keys will be shown as '*****'.
-    -Fields left blank will be shown blank.
-
- [0].JSONAR_UID_DISPLAY_NAME       dsfgw413-gcp                                      
- [1].REMOTE_MACHINE                True                                              
- [2].IP                            dsfgw413-gcp.impervaps.com                        
- [3].INSTANCE_IP_OR_DNS            dsfgw413-gcp.impervaps.com                        
- [4].NEWADMIN_PASS                 *****                                             
- [5].SONARGD_PASS                  *****                                             
- [6].SECADMIN_PASS                 *****                                             
- [7].SONARG_PASS                   *****                                             
- [8].ADMIN_EMAIL                                                                     
- [9].FROM_EMAIL                                                                      
-[10].SMTP_HOST                                                                       
-[11].SMTP_PORT                                                                       
-[12].SMTP_SSL                      True                                              
-[13].SMTP_USER                                                                       
-[14].SMTP_PASS                                                                       
-[15].PRODUCT                       data-security-fabric                              
-[16].JSONAR_UID                    b7ddf758-f1fd-42e2-939b-4d611ca109e8              
-[17].SONARD_IS_PRIMARY_PORT        3030                                              
-[18].SONARD_BSON_SORT              ${JSONAR_DATADIR}/sonarw/tmp                      
-[19].SONARD_EXTERNAL_SORT          ${JSONAR_DATADIR}/sonarw/tmp                      
-[20].REPORTS                       ${JSONAR_DATADIR}/sonarfinder/reports             
-[21].SONARK_EXPORT                 ${JSONAR_DATADIR}/sonark/tmp/export               
-
-Please enter one of the following:
-    -the number of the configuration value you would like to change (example: "2")
-    -"continue" if you are satisfied with the configuration values
-    -"exit" to quit without saving
-Choice: continue
-
-Please choose one of the following options for how to proceed:
-    [1] Run data-security-fabric setup without saving a configuration file (Default)
-    [2] Save and encrypt a configuration file then run data-security-fabric setup
-    [3] Save and encrypt a configuration file then exit without running data-security-fabric setup
-    [4] Quit
-Option: (1, 2, 3, 4): 1
-
-Installing data-security-fabric
-==============================================================================================================
-
-After confirming, you cannot make configuration changes by re-running this script. To make configuration changes, consult the Sonar documentation.
-Confirm and configure system? [yes/no]: yes
-
-----
-Importing jSonar public key to keyring
-Initial configuration completed. See /opt/jsonar/logs/sonar-setup-log for details
 ```
 
 Using this command to test it's working on port 8443
@@ -257,12 +107,191 @@ sudo /opt/jsonar/apps/4.13.0.10.0/bin/sonarg-setup services stop
 Make sure you can visit it through public ip/ DNS hostname of the **agentless-gw** we just installed.
 ![](_attachments/Pasted%20image%2020231020204354.png)
 
-**Conduct the same process in aws/azure.**
-## Templates
-### IAM
+**Conduct the same operation in aws/azure.**
+## GCP CloudSQL
+
+### GCP Cloud SQL Instance
+
+Create the Cloud SQL MySQL 8.0
+![](_attachments/Pasted%20image%2020231028203255.png)
+Open the public IP to your local machine that has DBeaver installed.
+![](_attachments/Pasted%20image%2020231028203757.png)
+Configure the firewall, add your IP to it.
+![](_attachments/Pasted%20image%2020231028204450.png)
+
+Testing the connection using DBeaver
+![](_attachments/Pasted%20image%2020231028204924.png)
+Make sure the 'Test Connection' succeeds before moving on.
+==Create DB and tables, generate some queries.==
+### DSF Cloud Account
+
+> DSF supports the below authentication mechanisms to access Google Cloud resources:
+- **Service Account:** If you opt to use "service_account" authentication mechanism, a JSON-formatted key file needs to be generated. This file holds the credentials that the Agentless Gateway uses to access logs from the Pub/Sub subscription. Ensure that the key file is copied to the Agentless Gateway host and it is owned by the "sonarw" user.  To create a service account key, please see [Creating and managing service account keys](https://cloud.google.com/iam/docs/creating-managing-service-account-keys). **A service account is identified by its email address, which is unique to the account.**
+- **Default:** If you use "default" authentication mechanism, then attach the Service Account created above to the Google Cloud Agentless Gateway instance.
+
+In our example, we adopt the Service Account. This is widely used.
+Make sure the following roles granted to the Service Account.
+
+GOTO IAM, create service account
+![](_attachments/Pasted%20image%2020231028200702.png)
+Skip 'Grant users access to this service account (optional)'
+![](_attachments/Pasted%20image%2020231028200751.png)
+You can check/edit the roles in the IAM.
+![](_attachments/Pasted%20image%2020231021125754.png)
+
+Next, create and save the key as json format.
+![](_attachments/Pasted%20image%2020231021131640.png)
+Then upload it into the $JSONAR_LOCALDIR folder path:
+```
+/opt/jsonar/local/credentials/xxx.json
+chmod 644 xxx.json
+```
+
+GOTO DSFHub to configure the Cloud Account.
+![](_attachments/Pasted%20image%2020231029103517.png)
+
+the Asset naming convention:
+Asset_id: `my_service_account@project-name.iam.gserviceaccount.com:project-name`
+Server IP & Server Hostname: `cloud.google.com`
+Server Port : `443`
+Auth mechanism: `service_account`
+key_file: `/path/to/gcp/credentials/service_account.json`
+
+Example:
+Asset_id: `training-demo@e-centaur-394913.iam.gserviceaccount.com:e-centaur-394913`
+key_file: `/opt/jsonar/local/credentials/e-centaur-394913-f89bccf37300.json`
+
+![](_attachments/Pasted%20image%2020231029111216.png)
+Sometimes, click Refresh and test again. Make sure it's successful before moving on.
+### GCP Enable Audit Logging
+
+GOTO IAM/Audit logs, then enable Cloud SQL Audit log
+- Admin Read
+- Data Read
+- Data Writes
+![](_attachments/Pasted%20image%2020231028222524.png)
+
+GOTO Cloud SQL instance/Overview/Edit, then Flags:
+- log_output : File
+- general_log : on
+
+![](_attachments/Pasted%20image%2020231028223335.png)
+
+GOTO Logs Explorer to filter out logs with a LogName that ends with 'mysql-general.log'.
+Please make sure you can see this type of LogName before moving on.
+```
+{
+  "textPayload": "2023-10-28T14:34:48.262698Z\troot[root] @  [127.0.0.1] 1437 1709744194 Query\tSelect 1",
+  "insertId": "2#809179008544#8535845228719947301#general#1698503688262698000#0000000000002af9-0@a1",
+  "resource": {
+    "type": "cloudsql_database",
+    "labels": {
+      "project_id": "e-centaur-394913",
+      "region": "us-central",
+      "database_id": "e-centaur-394913:gcp-demo-mysql"
+    }
+  },
+  "timestamp": "2023-10-28T14:34:48.262698Z",
+  "labels": {
+    "INSTANCE_UID": "1-a869952c-fd4e-4534-8905-5de03e293389",
+    "LOG_BUCKET_NUM": "9"
+  },
+  "logName": "projects/e-centaur-394913/logs/cloudsql.googleapis.com%2Fmysql-general.log",
+  "receiveTimestamp": "2023-10-28T14:34:49.183129418Z"
+}
+```
+### GCP PubSub
+
+Understand the basic concept:
+https://cloud.google.com/logging/docs/routing/overview?hl=en
+![](_attachments/Pasted%20image%2020231028212755.png)
+logging APi -> user-defined Sink to route the logs -> topic + subscription in PubSub
+In our example, we won't write logs to 'Log Buckets'.
+
+GOTO Logging -> Log Router
+Create the sink in 'log router' and create topics at the same time.
+![](_attachments/Pasted%20image%2020231028215016.png)
+Enter the contents below in the filter.
+Replace with your database_id and your logName.
+```
+resource.type="cloudsql_database"
+resource.labels.database_id="e-centaur-394913:gcp-demo-mysql"
+logName: "projects/e-centaur-394913/logs/cloudsql.googleapis.com%2Fmysql-general.log"
+```
+
+![](_attachments/Pasted%20image%2020231028221721.png)
+
+Create subscription
+GOTO Pub/Sub -> Topics, right click to create Subscriptions
+![](_attachments/Pasted%20image%2020231029141711.png)
+
+Subscription name: projects/e-centaur-394913/subscriptions/gcp-demo-mysql
+![](_attachments/Pasted%20image%2020231029142005.png)
+Write down the subscription name: `projects/e-centaur-394913/subscriptions/gcp-demo-mysql` for later use.
+## AWS RDS
+### AWS IAM
 
 #### Service Endpoints
 <https://docs.aws.amazon.com/general/latest/gr/cwl_region.html>
+
+
+## Templates
+### GCP CloudSQL MySQL
+
+#### GCP PubSub
+
+Template:
+asset_id: `projects/my-gcp-project/subscriptions/my-mysql-subscription`
+asset_display_name: `my_gcp_mysql_pubsub_display_name`
+pubsub_subscription: `projects/your-gcp-project/subscriptions/some-mysql-subscription`
+audit_type: `MYSQL`
+Server Port: `443`
+auth_mechanism: `service_account`
+
+Example:
+pubsub_subscription: `projects/e-centaur-394913/subscriptions/gcp-demo-mysql`
+
+> the public api provided by Google:
+![](_attachments/Pasted%20image%2020231029120149.png)
+
+<https://cloud.google.com/pubsub/docs/reference/service_apis_overview>
+#### GCP MySQL
+Template:
+==asset_id==: `my-gcp-project:location:my-gcp-mysql-db`
+==asset_display_name==: `my_gcp_mysql_display_name`
+auth_mechanism: `password`
+==logs_destination_asset_id==: `projects/my-gcp-project/subscriptions/my-mysql-subscription`
+server_port: `3306`
+database_name: `mysql`
+
+Optional (leave them empty or default value):
+username:
+password:
+
+Example:
+==logs_destination_asset_id==: `projects/e-centaur-394913/subscriptions/gcp-demo-mysql`
+
+#### Onboarding
+
+USC and Template.
+Prepare the template.
+After uploading, validate before importing the asset & connections.
+
+In the agentless gw -> Asset Details,  select the PubSub and click `Connect Gateway` 
+
+Enable audit in Hub -> USC. And configure the parent asset of PubSub.
+![](_attachments/Pasted%20image%2020231029151323.png)
+Make sure the 'Audit collection' turns green before moving on.
+
+Check the logs for any issue. 
+After the enablement, you should see the log file under gateway/syslog.
+![](_attachments/Pasted%20image%2020231029151643.png)
+
+Or you can check the service that is running in agentless gw.
+Service Name:
+`systemctl status -l gateway-gcp@mysql.service`
+And the log file path:
+`$JSONAR_LOGDIR/gateway/syslog/mysql_pubsub.log`
 
 
 ## On-Prem
