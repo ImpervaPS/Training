@@ -15,30 +15,27 @@ http://impervaps.s3-website-ap-southeast-1.amazonaws.com/ftp-downloads/
 ## Basic Configuration
 ### GCP VM Instance
 
-- [ ] Machine Type is e2-standard-8
-- [ ] Disk Space 240GB
-- [ ] Centos 8 Stream
-![width=400](_attachments/Pasted%20image%2020231020192929.png)
+Machine Type: `e2-standard-8`
+OS: `Centos 8 Stream`
+Disk Space: `240GB`
 
-![](_attachments/Pasted%20image%2020231020193229.png)
-![](_attachments/Pasted%20image%2020231020203916.png)
-
-- [ ] Check the firewall that allow ==port 8443 & 22== open to your current IP.
-- [ ] Go to 'firewall' to configure
+Check the firewall that allow **port 8443 & 22** open to your current IP and to your agentless gw.
+GOTO 'Firewall' to configure
 
 ```
-## check your current IP address
+## howto check your current IP address
 curl ifconfig.me
 ```
 
-### Install DBeaver
+### AWS VM Instance
 
-Download and install it. We will use it to generate some queries.
-https://dbeaver.io/download/
+AMI OS: `CentOS-Stream-ec2-8-20220919.1.x86_64-a5911e94-1971-4697-9bc5-02904340f1df`
+AMI ID: `ami-09bca320521273916`
+Instance Type: `t2.2xlarge`
+Key authentication.
 
-## Federation
-Using any cloud to install one Sonar Hub(warehouse), and configure static public ip for the federation with agentless gateways.
-
+### Azure VM Instance
+Will add shortly.
 ### Download installation from FTP-Downloads
 
 Ask admin to unblock the public access of the bucket, and the policy change to all accounts.
@@ -83,7 +80,7 @@ Configure advanced settings [y/N]: N
 
 ```
 
-Using this command to test it's working on port 8443
+Using this command to test the service start working on port 8443
 ```
 curl https://localhost:8443 -kv
 
@@ -99,7 +96,8 @@ sudo firewall-cmd --reload
 sudo firewall-cmd --zone=public --list-ports
 ```
 
-Stop the sonar services before shutdown:
+Reminder: 
+In case you need to reboot, stop the sonar services firstly.
 ```
 sudo /opt/jsonar/apps/4.13.0.10.0/bin/sonarg-setup services stop
 ```
@@ -108,6 +106,18 @@ Make sure you can visit it through public ip/ DNS hostname of the **agentless-gw
 ![](_attachments/Pasted%20image%2020231020204354.png)
 
 **Conduct the same operation in aws/azure.**
+
+### Install DBeaver
+
+Download and install it. We will use it to generate some queries.
+https://dbeaver.io/download/
+
+## Federation
+Using any cloud to install one Sonar Hub(warehouse), and configure static public ip for the federation with agentless gateways, or you can use DNS.
+
+GOTO 
+
+
 ## GCP CloudSQL
 
 ### GCP Cloud SQL Instance
