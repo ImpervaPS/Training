@@ -997,4 +997,53 @@ Event workflow
 
 Pipeline to aggregate the events -> Publish the pipeline -> Create workflow -> Generate tickets
 
-### Workflow User/Manager Role
+### Create the Pipeline
+
+#### Create workflow_demo_users in sonargd.
+Using mongo shell or Compass to create the collection.
+
+Create the join collection:
+```
+$JSONAR_BASEDIR/bin/mongo --quiet --host localhost --port 27117 -uadmin -p'Password'
+
+use sonargd.instance
+> db.workflow_demo_users.insertOne({"Assignment":"chunlei","Server Host Name":"192.168.43.72"})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("6539e36beec9dab5d996e2ed")
+}
+> db.workflow_demo_users.find();
+{ "_id" : ObjectId("6539e36beec9dab5d996e2ed"), "Assignment" : "chunlei", "Server Host Name" : "192.168.43.72" }
+```
+
+![](_attachments/Pasted%20image%2020231026133920.png)
+
+#### Create the Index
+
+Allow the CRUD.
+![](_attachments/Pasted%20image%2020231026135110.png)
+
+The trick to add the assignment to the mapping is to:
+open the joined collection and 
+![](_attachments/Pasted%20image%2020231026145031.png)
+double click the assignment
+![](_attachments/Pasted%20image%2020231026145100.png)
+Now you get the correct the join condition:
+![](_attachments/Pasted%20image%2020231026145134.png)
+
+#### Workflow Transition 
+
+Switch to SecAdmin
+- workflow manager/user
+
+user/roles configuration;
+lmrm__ae.managed 
+Usually this is imported from LDAP, Not controlled manually.
+
+The role in workflow is independent of the system role, because each workflow may have its distinctive design.
+
+Excercise:
+1- create user1
+2- create mgr1
+![](_attachments/Pasted%20image%2020231027145618.png)
+
