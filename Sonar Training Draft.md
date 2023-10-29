@@ -124,12 +124,13 @@ GOTO
 
 Create the Cloud SQL MySQL 8.0
 ![](_attachments/Pasted%20image%2020231028203255.png)
-Open the public IP to your local machine that has DBeaver installed.
-![](_attachments/Pasted%20image%2020231028203757.png)
-Configure the firewall, add your IP to it.
+Allow the connection via the public IP during the configuration.
+
+Configure the firewall, add your local IP to it.
 ![](_attachments/Pasted%20image%2020231028204450.png)
 
 Testing the connection using DBeaver
+
 ![](_attachments/Pasted%20image%2020231028204924.png)
 Make sure the 'Test Connection' succeeds before moving on.
 **Create DB and tables, generate some queries.**
