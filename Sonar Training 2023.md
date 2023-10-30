@@ -37,6 +37,10 @@ Will add shortly.
 ### Download installation from FTP-Downloads
 
 Ask admin to unblock the public access of the bucket, and the policy change to all accounts.
+If upgrading, make sure you unset the environment:
+```
+unset JSONAR_LOCALDIR JSONAR_BASEDIR JSONAR_VERSION JSONAR_DATADIR JSONAR_LOGDIR
+```
 
 In terminal, run the command such as:
 ```
@@ -880,7 +884,7 @@ SELECT POLICY_NAME FROM audit_unified_enabled_policies;
 #### Onboarding the DB
 Template or the USC.
 
-Use 'asset details' to 'Connect Gateway' and select the =='audit_type'== to 'multi-unified'.
+Use 'asset details' to 'Connect Gateway' and set the 'audit_type' to 'multi-unified'.
 Check the log files:
 ```
 tail -f -n 200 /opt/jsonar/logs/gateway/cloud/odbc/oracle_unified_multi/sonargateway.log
@@ -906,7 +910,7 @@ Add the bind_ip=0.0.0.0
 Then restart service
 `systemctl restart sonard`
 
-insert some data into mongodb
+Insert some data into mongodb and run some basic queries.
 ```
 use training;
 db.inventory.insertMany([
@@ -962,23 +966,19 @@ db.inventory.find({$or:[{"status":"B"},{"qty":{$lt:75}}]})
 Now let's switch to the Sonar Hub Analyzer:
 ![](_attachments/Pasted%20image%2020231024150005.png)
 
-How to practice?
+Create pipeline.
 
-Add stage : count
-To count by ID:
-
-Create pipeline:
-start with match:
-And more complex : add multiple $and condition to the pipeline.
+Start first stage with `match`
+More complex : add $and $ne condition to the `match` stage.
 ```
 $and: [{"Server Type" : {$ne: "ORACLE" }},{"Database Name" : "admin"}] 
 ```
+You can add stage `count`, count by `_id` after the `match`.
 
-Period Start
+`Period Start`
 Between, it only affects the first date. Edit the second date to make a change.
 
 Or the relative to when the query runs
-
 ```
 ## You may want the query to filter based on dates relative to when the query runs
 $$LMRM_NOW for the time the query runs
@@ -1006,7 +1006,7 @@ Create the join collection:
 ```
 $JSONAR_BASEDIR/bin/mongo --quiet --host localhost --port 27117 -uadmin -p'Password'
 
-use sonargd.instance
+> use sonargd
 > db.workflow_demo_users.insertOne({"Assignment":"chunlei","Server Host Name":"192.168.43.72"})
 {
 	"acknowledged" : true,
@@ -1019,30 +1019,109 @@ use sonargd.instance
 ![](_attachments/Pasted%20image%2020231026133920.png)
 #### Create the Index
 
-Allow the CRUD.
+Allow the CRUD. 
+Add the email attribute.
 ![](_attachments/Pasted%20image%2020231026135110.png)
 
 The trick to add the assignment to the mapping is to:
-open the joined collection and 
+open the joined collection:
 ![](_attachments/Pasted%20image%2020231026145031.png)
-double click the assignment 
+
+Double click the assignment, user1.
+
 ![](_attachments/Pasted%20image%2020231026145100.png)
+
 Now you get the correct the join condition:
 ![](_attachments/Pasted%20image%2020231026145134.png)
 
-#### Workflow Transition 
+### Workflow Transition 
 
-Switch to SecAdmin
-- workflow manager/user
+>Switch to SecAdmin in case you can't use admin to create user/roles.
+
 
 user/roles configuration;
 lmrm__ae.managed 
 Usually this is imported from LDAP, Not controlled manually.
 
-The role in workflow is independent of the system role, because each workflow may have its distinctive design.
+Because each workflow may have its distinctive design, the user/role in workflow is independent of the system role. You can find the workflow users information in lmrm__ae.managed.
+
+In case you can't populate in the SonarK -> Discovery, you need to manually index it. How to do it? Refer to the 'pipeline -> workflow_demo_users' collection.
 
 Excercise:
-1- create user1
-2- create mgr1
+1- create user1, assign workflowuser role.
+2- create mgr1, assign workflowmanager role.
 ![](_attachments/Pasted%20image%2020231027145618.png)
 
+## CDP
+https://docs.cloudera.com/cdp-private-cloud-base/7.1.7/installation/topics/cdpdc-trial-installation.html
+
+
+MySQL Query
+```
+-- Create the 'world' database if it doesn't exist
+CREATE DATABASE IF NOT EXISTS world;
+
+-- Switch to the 'world' database
+USE world;
+
+-- Create the 'world_city' table
+CREATE TABLE IF NOT EXISTS world_city (
+    city_id INT AUTO_INCREMENT PRIMARY KEY,
+    city_name VARCHAR(255) NOT NULL
+);
+
+-- Insert 50 famous city names into the 'world_city' table
+INSERT INTO world_city (city_name) VALUES
+    ('New York'),
+    ('Los Angeles'),
+    ('Chicago'),
+    ('San Francisco'),
+    ('London'),
+    ('Paris'),
+    ('Tokyo'),
+    ('Sydney'),
+    ('Toronto'),
+    ('Singapore'),
+    ('Hong Kong'),
+    ('Mumbai'),
+    ('Dubai'),
+    ('Shanghai'),
+    ('Beijing'),
+    ('Bangkok'),
+    ('Berlin'),
+    ('Rome'),
+    ('Istanbul'),
+    ('Cairo'),
+    ('Moscow'),
+    ('Rio de Janeiro'),
+    ('Buenos Aires'),
+    ('Cape Town'),
+    ('Johannesburg'),
+    ('Nairobi'),
+    ('Madrid'),
+    ('Barcelona'),
+    ('Amsterdam'),
+    ('Vienna'),
+    ('Prague'),
+    ('Athens'),
+    ('Stockholm'),
+    ('Oslo'),
+    ('Helsinki'),
+    ('Copenhagen'),
+    ('Warsaw'),
+    ('Dublin'),
+    ('Lisbon'),
+    ('Lima'),
+    ('Mexico City'),
+    ('Vancouver'),
+    ('Sydney'),
+    ('Auckland'),
+    ('Wellington'),
+    ('Kuala Lumpur'),
+    ('Seoul'),
+    ('Bangalore');
+
+-- Verify the data in the 'world_city' table
+SELECT * FROM world_city
+Limit 5;
+```
