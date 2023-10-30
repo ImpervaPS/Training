@@ -170,10 +170,18 @@ You can verify and edit the roles in IAM.
 Next, create and save the key as json format.
 ![](_attachments/Pasted%20image%2020231021131640.png)
 Then upload it into the $JSONAR_LOCALDIR folder path:
+```bash
+mv xxx.json $JSONAR_LOCALDIR/credentials/xxx.json
+sudo chown sonarw.sonar xxx.json
+sudo chmod 644 xxx.json
+
+## make sure it has the correct permission
+ls -ltr
+total 4
+-rw-rw-r--. 1 sonarw sonar 2368 Oct 28 13:23 xxx.json
 ```
-/opt/jsonar/local/credentials/xxx.json
-chmod 644 xxx.json
-```
+
+
 
 GOTO DSFHub to configure the Cloud Account.
 ![](_attachments/Pasted%20image%2020231029103517.png)
