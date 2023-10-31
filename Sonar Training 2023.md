@@ -1233,9 +1233,9 @@ In this scenario, you have both RDS and agentless gw in your account. You work t
 Your counterpart's account id:  `2222`
 Your account id: `1111`
 
-Create two polices:
+**Create the first policy/role pair**
 
-`training-role-assuming-sts`
+Policy name: `training-role-assuming-sts`
 ```
 {
     "Version": "2012-10-17",
@@ -1250,5 +1250,72 @@ Create two polices:
 }
 ```
 
+Create the role to apply that policy:
+Role name: `training-role-in-agentlessgw`
 
+**Now create the second policy/role pair**
 
+2nd Policy name: `training-rds-loggroup-audit`
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "rds:DescribeDBInstances",
+                "logs:DescribeLogGroups",
+                "logs:DescribeLogStreams",
+                "logs:FilterLogEvents",
+                "logs:GetLogEvents"
+            ],
+            "Resource": [
+                "arn:aws:logs:*:1111:log-group:*:log-stream:*",
+                "arn:aws:rds:*:1111:cluster:*",
+                "arn:aws:rds:*:1111:db:*"
+            ]
+        }
+    ]
+}
+```
+
+2nd Role name: `training-role-in-rds-account`
+
+Now establish the trust relationship between two accounts, `1111` and `2222`
+
+![](_attachments/Pasted%20image%2020231031201924.png)
+
+Edit your 1st role 'Trusted entities':
+Role name: `training-role-in-agentlessgw`
+```
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": "arn:aws:iam::2222:role/training-role-in-rds-account"
+			},
+			"Action": "sts:AssumeRole"
+		}
+	]
+}
+```
+
+Edit your 2nd role 'Trusted entities'':
+Role name: `training-role-in-rds-account`
+```
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": "arn:aws:iam::2222:role/training-role-in-agentlessgw"
+			},
+			"Action": "sts:AssumeRole"
+		}
+	]
+}
+```
