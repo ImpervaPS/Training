@@ -288,7 +288,6 @@ Create the role and extension to write log to logGroup
 ```
 CREATE ROLE rds_pgaudit;
 ## Reboot the DB instance.
-CREATE EXTENSION pgaudit;
 SHOW shared_preload_libraries;
 CREATE EXTENSION pgaudit;
 ```
