@@ -1283,6 +1283,7 @@ Role name: `training-role-in-agentlessgw`
 2nd Role name: `training-role-in-rds-account`
 
 Now establish the trust relationship between two accounts, `1111` and `2222`
+BUT, before doing that, make sure your counter part has created the two roles as mentioned below: `training-role-in-rds-account` and `training-role-in-agentlessgw`. AWS will verify the existence.
 
 ![](_attachments/Pasted%20image%2020231031201924.png)
 
