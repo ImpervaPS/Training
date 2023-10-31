@@ -1063,8 +1063,9 @@ Excercise:
 ## CDP
 https://docs.cloudera.com/cdp-private-cloud-base/7.1.7/installation/topics/cdpdc-trial-installation.html
 
+## Supplementary information
 
-MySQL Query
+### MySQL Query
 ```
 -- Create the 'world' database if it doesn't exist
 CREATE DATABASE IF NOT EXISTS world;
