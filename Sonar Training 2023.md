@@ -1333,3 +1333,52 @@ Then disassociate the ID
 `aws ec2 disassociate-iam-instance-profile --association-id iip-assoc-0xxxx`
 ### IAM role in AWS with one account
 
+reuse the policy if it exists.
+**Create the policy/role pair**
+
+Policy name: `training-rds-loggroup-audit`
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "rds:DescribeDBInstances",
+                "logs:DescribeLogGroups",
+                "logs:DescribeLogStreams",
+                "logs:FilterLogEvents",
+                "logs:GetLogEvents"
+            ],
+            "Resource": [
+                "arn:aws:logs:*:1111:log-group:*:log-stream:*",
+                "arn:aws:rds:*:1111:cluster:*",
+                "arn:aws:rds:*:1111:db:*"
+            ]
+        }
+    ]
+}
+```
+
+Role name: `training-demo-self-role`
+
+Edit your role 'Trusted entities':
+Replace the account id 1111.
+```
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Principal": {
+				"Service": "ec2.amazonaws.com",
+				"AWS": "arn:aws:iam::1111:role/training-demo-self-role"
+			},
+			"Action": "sts:AssumeRole"
+		}
+	]
+}
+```
+
+Associate the IAM role with your EC2-Instance. Modify in the security.
