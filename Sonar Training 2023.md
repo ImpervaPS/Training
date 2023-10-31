@@ -1065,7 +1065,7 @@ https://docs.cloudera.com/cdp-private-cloud-base/7.1.7/installation/topics/cdpdc
 
 ## Supplementary information
 
-### MySQL Query
+### MySQL SQL Script
 ```
 -- Create the 'world' database if it doesn't exist
 CREATE DATABASE IF NOT EXISTS world;
@@ -1134,3 +1134,90 @@ INSERT INTO world_city (city_name) VALUES
 SELECT * FROM world_city
 Limit 5;
 ```
+
+Credit Card Table
+```
+-- Create the transaction table
+CREATE TABLE transaction (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    dining_time DATETIME,
+    guest_name VARCHAR(255),
+    person_number INT,
+    credit_card VARCHAR(19)  -- Typically, credit card numbers can be up to 19 digits
+);
+
+-- Insert sample data
+INSERT INTO transaction (dining_time, guest_name, person_number, credit_card) VALUES 
+('2023-10-26 12:00:00', 'John Doe', 2, '4111111111111111'), 
+('2023-10-26 12:30:00', 'Jane Smith', 4, '4444333322221111'),
+('2023-10-26 13:00:00', 'Sam Brown', 1, '5500005555111118'),
+('2023-10-26 13:30:00', 'Lucy Green', 3, '340000000000009'),
+('2023-10-26 14:00:00', 'Mike Blue', 2, '370000000000002'),
+('2023-10-26 14:30:00', 'Tom White', 4, '6011000990139424'),
+('2023-10-26 15:00:00', 'Anna Black', 2, '3530111333300000'),
+('2023-10-26 15:30:00', 'Ella Grey', 1, '3566002020360505'),
+('2023-10-26 16:00:00', 'Emma Sky', 2, '5105105105105100'),
+('2023-10-26 16:30:00', 'Liam Stone', 3, '4012888888881881'),
+('2023-10-26 17:00:00', 'Mason Red', 4, '4222222222222'),
+('2023-10-26 17:30:00', 'Olivia Gold', 2, '5019717010103742'),
+('2023-10-26 18:00:00', 'James Silver', 1, '6331101999990016'),
+('2023-10-26 18:30:00', 'Isabella Copper', 3, '5610591081018250'),
+('2023-10-26 19:00:00', 'Benjamin Steel', 2, '30569309025904'),
+('2023-10-26 19:30:00', 'Sophia Brass', 4, '6011111111111117'),
+('2023-10-26 20:00:00', 'Jacob Iron', 1, '6011000990139424'),
+('2023-10-26 20:30:00', 'Mia Zinc', 2, '3530111333300000'),
+('2023-10-26 21:00:00', 'Noah Aluminum', 3, '3566002020360505'),
+('2023-10-26 21:30:00', 'Ava Titanium', 4, '5105105105105100');
+
+```
+
+### PostgreSQL
+Credit Card Table
+
+```
+-- Enable the audit plugin
+
+CREATE ROLE rds_pgaudit;
+SHOW shared_preload_libraries;
+CREATE EXTENSION pgaudit;
+
+-- Create the transaction table that contains sensitive information
+CREATE TABLE transaction (
+    id SERIAL PRIMARY KEY,
+    dining_time TIMESTAMP,
+    guest_name VARCHAR(255),
+    person_number INT,
+    credit_card VARCHAR(19)  -- Typically, credit card numbers can be up to 19 digits
+);
+
+-- Insert sample data
+INSERT INTO transaction (dining_time, guest_name, person_number, credit_card) VALUES 
+('2023-10-26 12:00:00', 'John Doe', 2, '4111111111111111'), 
+('2023-10-26 12:30:00', 'Jane Smith', 4, '4444333322221111'),
+('2023-10-26 13:00:00', 'Sam Brown', 1, '5500005555111118'),
+('2023-10-26 13:30:00', 'Lucy Green', 3, '340000000000009'),
+('2023-10-26 14:00:00', 'Mike Blue', 2, '370000000000002'),
+('2023-10-26 14:30:00', 'Tom White', 4, '6011000990139424'),
+('2023-10-26 15:00:00', 'Anna Black', 2, '3530111333300000'),
+('2023-10-26 15:30:00', 'Ella Grey', 1, '3566002020360505'),
+('2023-10-26 16:00:00', 'Emma Sky', 2, '5105105105105100'),
+('2023-10-26 16:30:00', 'Liam Stone', 3, '4012888888881881'),
+('2023-10-26 17:00:00', 'Mason Red', 4, '4222222222222'),
+('2023-10-26 17:30:00', 'Olivia Gold', 2, '5019717010103742'),
+('2023-10-26 18:00:00', 'James Silver', 1, '6331101999990016'),
+('2023-10-26 18:30:00', 'Isabella Copper', 3, '5610591081018250'),
+('2023-10-26 19:00:00', 'Benjamin Steel', 2, '30569309025904'),
+('2023-10-26 19:30:00', 'Sophia Brass', 4, '6011111111111117'),
+('2023-10-26 20:00:00', 'Jacob Iron', 1, '6011000990139424'),
+('2023-10-26 20:30:00', 'Mia Zinc', 2, '3530111333300000'),
+('2023-10-26 21:00:00', 'Noah Aluminum', 3, '3566002020360505'),
+('2023-10-26 21:30:00', 'Ava Titanium', 4, '5105105105105100');
+
+```
+
+### Day 2 Exercise Link
+
+[Cloud SQL for MySQL Onboarding Steps](https://docs.imperva.com/bundle/onboarding-databases-to-sonar-reference-guide/page/Cloud-SQL-for-MySQL-Onboarding-Steps_212012328.html)
+[STEP 1: Onboarding Prerequisites](https://docs.imperva.com/bundle/onboarding-databases-to-sonar-reference-guide/page/Cloud-SQL-for-MySQL-Onboarding-Steps_212012328.html#)
+[STEP 2: Enabling Audit on the Data Source](https://docs.imperva.com/bundle/onboarding-databases-to-sonar-reference-guide/page/Cloud-SQL-for-MySQL-Onboarding-Steps_212012328.html#)
+[STEP 3: Collecting Audit Data](https://docs.imperva.com/bundle/onboarding-databases-to-sonar-reference-guide/page/Cloud-SQL-for-MySQL-Onboarding-Steps_212012328.html#)
