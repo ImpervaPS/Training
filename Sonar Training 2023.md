@@ -181,8 +181,6 @@ total 4
 -rw-rw-r--. 1 sonarw sonar 2368 Oct 28 13:23 xxx.json
 ```
 
-
-
 GOTO DSFHub to configure the Cloud Account.
 ![](_attachments/Pasted%20image%2020231029103517.png)
 
@@ -1219,8 +1217,3 @@ INSERT INTO transaction (dining_time, guest_name, person_number, credit_card) VA
 
 [Cloud SQL for MySQL Onboarding Steps](https://docs.imperva.com/bundle/onboarding-databases-to-sonar-reference-guide/page/Cloud-SQL-for-MySQL-Onboarding-Steps_212012328.html)
 
-[STEP 1: Onboarding Prerequisites](https://docs.imperva.com/bundle/onboarding-databases-to-sonar-reference-guide/page/Cloud-SQL-for-MySQL-Onboarding-Steps_212012328.html#)
-
-[STEP 2: Enabling Audit on the Data Source](https://docs.imperva.com/bundle/onboarding-databases-to-sonar-reference-guide/page/Cloud-SQL-for-MySQL-Onboarding-Steps_212012328.html#)
-
-[STEP 3: Collecting Audit Data](https://docs.imperva.com/bundle/onboarding-databases-to-sonar-reference-guide/page/Cloud-SQL-for-MySQL-Onboarding-Steps_212012328.html#)
