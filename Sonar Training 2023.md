@@ -1226,7 +1226,7 @@ INSERT INTO transaction (dining_time, guest_name, person_number, credit_card) VA
 
 [Cloud SQL for MySQL Onboarding Steps](https://docs.imperva.com/bundle/onboarding-databases-to-sonar-reference-guide/page/Cloud-SQL-for-MySQL-Onboarding-Steps_212012328.html)
 
-### IAM role in AWS with one account. 
+### IAM role in AWS with STS assuming role(two accounts). 
 
 In this scenario, you have both RDS and agentless gw in your account. You work together with your partner, you will audit each other's RDS.
 
@@ -1320,3 +1320,16 @@ Role name: `training-role-in-rds-account`
 	]
 }
 ```
+
+Associate the IAM role with your EC2-Instance. Modify in the security.
+
+Incase you encountered issue as below:
+`the selected instance has more than one IAM role associated. This usually occurs when the instance is in the process of replacing an existing instance profile association.`
+
+Run the command using aws cli:
+`aws ec2 describe-iam-instance-profile-associations` to locate the `"AssociationId": "iip-assoc-0xxxx"`
+
+Then disassociate the ID
+`aws ec2 disassociate-iam-instance-profile --association-id iip-assoc-0xxxx`
+### IAM role in AWS with one account
+
