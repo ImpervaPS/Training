@@ -375,7 +375,6 @@ Create the log group and rds policy: training-rds-loggroup-audit
             "Sid": "VisualEditor0",
             "Effect": "Allow",
             "Action": [
-                "logs:DescribeLogGroups",
                 "rds:DescribeDBInstances",
                 "logs:DescribeLogGroups",
                 "logs:DescribeLogStreams",
