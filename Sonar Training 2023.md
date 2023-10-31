@@ -1226,3 +1226,29 @@ INSERT INTO transaction (dining_time, guest_name, person_number, credit_card) VA
 
 [Cloud SQL for MySQL Onboarding Steps](https://docs.imperva.com/bundle/onboarding-databases-to-sonar-reference-guide/page/Cloud-SQL-for-MySQL-Onboarding-Steps_212012328.html)
 
+### IAM role in AWS with one account. 
+
+In this scenario, you have both RDS and agentless gw in your account. You work together with your partner, you will audit each other's RDS.
+
+Your counterpart's account id:  `2222`
+Your account id: `1111`
+
+Create two polices:
+
+`training-role-assuming-sts`
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "sts:AssumeRole",
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+
+
