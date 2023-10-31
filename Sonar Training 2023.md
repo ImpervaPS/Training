@@ -213,6 +213,7 @@ GOTO Cloud SQL instance/Overview/Edit, then Flags:
 
 GOTO Logs Explorer to filter out logs with a LogName that ends with 'mysql-general.log'.
 Please make sure you can see this type of LogName before moving on.
+![](_attachments/Pasted%20image%2020231031121708.png)
 ```
 {
   "textPayload": "2023-10-28T14:34:48.262698Z\troot[root] @  [127.0.0.1] 1437 1709744194 Query\tSelect 1",
