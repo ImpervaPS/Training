@@ -1058,6 +1058,16 @@ Excercise:
 2- create mgr1, assign workflowmanager role.
 ![](_attachments/Pasted%20image%2020231027145618.png)
 
+## SDM Sensitive Data Management
+
+Prerequisites:
+[Asset/Database Types Supported by SDM](https://docs.imperva.com/bundle/v4.13-sonar-user-guide/page/78851.htm)
+Make sure the connection of SDM is enabled on the supported assets/databases.
+
+In GCP, only GCP BigQuery is supported.
+In AWS, RDS/DynamoDB/Redshfit are supported.
+MongoDB/Oracle are also supported. Refer to the link above for complete list.
+
 ## CDP
 https://docs.cloudera.com/cdp-private-cloud-base/7.1.7/installation/topics/cdpdc-trial-installation.html
 
