@@ -1050,8 +1050,11 @@ Usually this is imported from LDAP, Not controlled manually.
 
 Because each workflow may have its distinctive design, the user/role in workflow is independent of the system role. You can find the workflow users information in lmrm__ae.managed.
 
-In case you can't populate in the SonarK -> Discovery, you need to manually index it. How to do it? Refer to the 'pipeline -> workflow_demo_users' collection.
+In case you can't populate in the SonarK -> Discovery, you need to manually index it. How to do it? Define it in SonarK.
 ![](_attachments/Pasted%20image%2020231101094101.png)
+
+Name the index
+![](_attachments/Pasted%20image%2020231101094235.png)
 
 Excercise:
 1- create user1, assign workflowuser role.
