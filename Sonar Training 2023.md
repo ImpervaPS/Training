@@ -1471,3 +1471,12 @@ $JSONAR_BASEDIR/bin/mongoimport --host localhost --port 27117 --db sonargd --col
 --file /home/yourhomeuser/workflow_demo_users.json \
 --username admin --password "YourStrongPassword" --authenticationDatabase admin --jsonArray
 ```
+
+### Email template
+Insert your email template into the collection:
+Source collection: `lmrm__scheduler-lmrm__email_templates`
+
+You need to index this firstly:
+![](_attachments/Pasted%20image%2020231102070852.png)
+Now go to the job schedule, you can select the newly created template
+![](_attachments/Pasted%20image%2020231102071057.png)
