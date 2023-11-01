@@ -1056,10 +1056,12 @@ In case you can't populate in the SonarK -> Discovery, you need to manually inde
 Name the index
 ![](_attachments/Pasted%20image%2020231101094235.png)
 
-Excercise:
+Excercise: in User/Roles
 1- create user1, assign workflowuser role.
 2- create mgr1, assign workflowmanager role.
-![](_attachments/Pasted%20image%2020231027145618.png)
+
+
+
 
 ## SDM Sensitive Data Management
 
