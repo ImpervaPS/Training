@@ -1422,3 +1422,9 @@ $JSONAR_BASEDIR/bin/mongoimport --host localhost --port 27117 --db sonargd --col
 --file /home/yourhomeuser/instance.json \
 --username admin --password "YourStrongPassword" --authenticationDatabase admin --jsonArray
 ```
+
+```
+$JSONAR_BASEDIR/bin/mongoimport --host localhost --port 27117 --db sonargd --collection workflow_demo_users \
+--file /home/yourhomeuser/workflow_demo_users.json \
+--username admin --password "YourStrongPassword" --authenticationDatabase admin --jsonArray
+```
