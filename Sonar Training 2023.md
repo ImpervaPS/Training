@@ -1126,6 +1126,8 @@ the scan result can be found here:
         }
 }
 ```
+"Field" : "guest_name" is the column name.
+
 ## CDP
 https://docs.cloudera.com/cdp-private-cloud-base/7.1.7/installation/topics/cdpdc-trial-installation.html
 
