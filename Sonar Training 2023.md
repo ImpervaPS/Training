@@ -1044,13 +1044,14 @@ Now you get the correct the join condition:
 >Switch to SecAdmin in case you can't use admin to create user/roles.
 
 
-user/roles configuration;
-lmrm__ae.managed 
+user/roles configuration: `lmrm__ae.managed`
+
 Usually this is imported from LDAP, Not controlled manually.
 
 Because each workflow may have its distinctive design, the user/role in workflow is independent of the system role. You can find the workflow users information in lmrm__ae.managed.
 
 In case you can't populate in the SonarK -> Discovery, you need to manually index it. How to do it? Refer to the 'pipeline -> workflow_demo_users' collection.
+![](_attachments/Pasted%20image%2020231101094101.png)
 
 Excercise:
 1- create user1, assign workflowuser role.
@@ -1397,4 +1398,3 @@ $JSONAR_BASEDIR/bin/mongoexport --host localhost --port 27117 --db sonargd --col
 ```
 
 Now.
-le
