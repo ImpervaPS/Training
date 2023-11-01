@@ -1067,8 +1067,9 @@ Switch to 'Justify Workflow'
 Create new workflow named as 'event-based workflow training'
 Add the pipeline we just added.
 ![](_attachments/Pasted%20image%2020231101101934.png)
-Click any button here to create the new role SECENGINEER
-![](_attachments/Pasted%20image%2020231101102526.png)
+Click any button here to create the new role SECENGINEER/SECADMIN. 
+Make sure you add the selected role to the user. Otherwise the roles won't be created.
+![](_attachments/Pasted%20image%2020231101102832.png)
 ## SDM Sensitive Data Management
 
 Prerequisites:
