@@ -1386,8 +1386,14 @@ Associate the IAM role with your EC2-Instance. Modify in the security.
 ### mongoimport
 `source /etc/sysconfig/jsonar`
 
-`$JSONAR_BASEDIR/bin/mongoimport --host localhost --port 27117 --db demo --collection inventory --file /home/user/inventory.json --username admin --password "yourStrongPassword" --authenticationDatabase admin --jsonArray`
+`$JSONAR_BASEDIR/bin/mongoimport --host localhost --port 27117 --db demo --collection inventory --file /home/<username>/inventory.json --username admin --password "yourStrongPassword" --authenticationDatabase admin --jsonArray`
 
 replace your json file location and your password.
 
+```
+$JSONAR_BASEDIR/bin/mongoexport --host localhost --port 27117 --db sonargd --collection instance \
+--out /home/<username>/gcp_instance.json \
+--username admin --password "yourStrongPassword" --authenticationDatabase admin --jsonArray
+```
 
+Now.

@@ -1,0 +1,19 @@
+[{
+  "_id": {
+    "$oid": "6539e36beec9dab5d996e2ed"
+  },
+  "Assignment": "chunlei",
+  "Server IP": "192.168.43.72"
+},{
+  "_id": {
+    "$oid": "6539e503f97e40e718b96b76"
+  },
+  "Assignment": "user3",
+  "Server IP": "rds"
+},{
+  "_id": {
+    "$oid": "6539e503f97e40e718b96b74"
+  },
+  "Assignment": "SECENGINEER",
+  "Server IP": "192.168.43.70"
+}]
