@@ -1,0 +1,61 @@
+[{
+  "_id": {
+    "$oid": "653746365a05e27d8fd07aa8"
+  },
+  "item": "journal",
+  "qty": 25,
+  "size": {
+    "h": 14,
+    "w": 21,
+    "uom": "cm"
+  },
+  "status": "A"
+},{
+  "_id": {
+    "$oid": "653746365a05e27d8fd07aa9"
+  },
+  "item": "notebook",
+  "qty": 50,
+  "size": {
+    "h": 8.5,
+    "w": 11,
+    "uom": "in"
+  },
+  "status": "A"
+},{
+  "_id": {
+    "$oid": "653746365a05e27d8fd07aab"
+  },
+  "item": "planner",
+  "qty": 75,
+  "size": {
+    "h": 22.85,
+    "w": 30,
+    "uom": "cm"
+  },
+  "status": "D"
+},{
+  "_id": {
+    "$oid": "653746365a05e27d8fd07aac"
+  },
+  "item": "postcard",
+  "qty": 45,
+  "size": {
+    "h": 10,
+    "w": 15.25,
+    "uom": "cm"
+  },
+  "status": "A"
+},{
+  "_id": {
+    "$oid": "653746365a05e27d8fd07aaa"
+  },
+  "item": "paper",
+  "qty": 100,
+  "size": {
+    "h": 8.5,
+    "w": 11,
+    "uom": "in"
+  },
+  "status": "B"
+}]
