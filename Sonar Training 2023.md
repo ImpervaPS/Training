@@ -1086,6 +1086,46 @@ In GCP, only GCP BigQuery is supported.
 In AWS, RDS/DynamoDB/Redshfit are supported.
 MongoDB/Oracle are also supported. Refer to the link above for complete list.
 
+the scan result can be found here:
+```
+> db.sonarsense_result_location.find().pretty()
+{
+        "_id" : ObjectId("65425c53d6ec0e4117059a32"),
+        "executed_scan_id" : "c696016c-7985-4ed6-9c8b-40aa4acfa92a",
+        "detected_location" : {
+                "Field" : "guest_name",
+                "Table" : "transaction",
+                "Schema" : "public",
+                "data_type" : "String",
+                "DB" : "postgres"
+        },
+        "detected_levels" : {
+                "sample" : {
+                        "detection_explanation" : "match expression",
+                        "scan_level" : "sample",
+                        "context" : {
+                                "label" : [
+                                        "training_transaction"
+                                ],
+                                "detector_name" : "training_content_guest_name"
+                        },
+                        "detector_definition" : [
+                                "Ella Grey",
+                                "Emma Sky"
+                        ],
+                        "matches" : 2,
+                        "rows_scanned" : 20,
+                        "percent_sensitive" : 10,
+                        "fraction" : 0.1,
+                        "percent" : 10,
+                        "sample" : [ ],
+                        "ml_stats" : {
+                                "percent" : 10
+                        }
+                }
+        }
+}
+```
 ## CDP
 https://docs.cloudera.com/cdp-private-cloud-base/7.1.7/installation/topics/cdpdc-trial-installation.html
 
