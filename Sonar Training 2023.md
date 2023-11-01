@@ -1413,3 +1413,6 @@ $JSONAR_BASEDIR/bin/mongoexport --host localhost --port 27117 --db sonargd --col
 ```
 
 Now.
+```
+scp -i imofficial.pem archive.zip ec2-user@xxxx:/home/ec2-user/
+```
