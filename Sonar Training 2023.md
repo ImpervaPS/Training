@@ -1063,6 +1063,10 @@ Excercise: in User/Roles
 1- create user1, assign workflowuser role.
 2- create mgr1, assign workflowmanager role.
 
+Switch to 'Justify Workflow'
+Create new workflow named as 'event-based workflow training'
+Add the pipeline we just added.
+![](_attachments/Pasted%20image%2020231101101934.png)
 ## SDM Sensitive Data Management
 
 Prerequisites:
