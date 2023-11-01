@@ -1073,6 +1073,9 @@ Make sure you add the selected role to the user. Otherwise the roles won't be cr
 
 Configure the job run. Select the 'Justify' output type. Otherwise you won't see the tickets.
 ![](_attachments/Pasted%20image%2020231101104810.png)
+Add the 'JUSTIFIED' status in addition to the 'OPEN' and 'CLOSED' status.
+![](_attachments/Pasted%20image%2020231101201515.png)
+When the pipeline runs, it will start with the SECENGINEER role. So in the transition, if the 'To Status' is 'OPEN', the default role should be SECENGINEER again. For the 'CLOSED' and JUSTIFIED status, the default role is SECMGR.
 ## SDM Sensitive Data Management
 
 Prerequisites:
