@@ -1070,6 +1070,9 @@ Add the pipeline we just added.
 Click any button here to create the new role SECENGINEER/SECADMIN. 
 Make sure you add the selected role to the user. Otherwise the roles won't be created.
 ![](_attachments/Pasted%20image%2020231101102832.png)
+
+Configure the job run. Select the 'Justify' output type. Otherwise you won't see the tickets.
+![](_attachments/Pasted%20image%2020231101104810.png)
 ## SDM Sensitive Data Management
 
 Prerequisites:
