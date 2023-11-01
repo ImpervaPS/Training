@@ -1416,3 +1416,9 @@ Now.
 ```
 scp -i imofficial.pem archive.zip ec2-user@xxxx:/home/ec2-user/
 ```
+
+```
+$JSONAR_BASEDIR/bin/mongoimport --host localhost --port 27117 --db sonargd --collection instance \
+--file /home/yourhomeuser/instance.json \
+--username admin --password "YourStrongPassword" --authenticationDatabase admin --jsonArray
+```
