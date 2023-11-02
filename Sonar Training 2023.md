@@ -1127,6 +1127,10 @@ the scan result can be found here:
 }
 ```
 "Field" : "guest_name" is the column name.
+In sonarsense.log you will find the scan log naming is different:
+catalog: `database`
+schema: `schema`
+collection: `table`
 
 ## CDP
 https://docs.cloudera.com/cdp-private-cloud-base/7.1.7/installation/topics/cdpdc-trial-installation.html
