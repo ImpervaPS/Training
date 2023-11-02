@@ -246,12 +246,21 @@ In our example, we won't write logs to 'Log Buckets'.
 GOTO Logging -> Log Router
 Create the sink in 'log router' and create topics at the same time.
 ![](_attachments/Pasted%20image%2020231028215016.png)
-Enter the contents below in the filter.
+Enter the contents below in the sink filter.
+
 Replace with your database_id and your logName.
+MySQL Filter:
 ```
 resource.type="cloudsql_database"
 resource.labels.database_id="e-centaur-394913:gcp-demo-mysql"
 logName: "projects/e-centaur-394913/logs/cloudsql.googleapis.com%2Fmysql-general.log"
+```
+
+(Additional) PostgreSQL Filter:
+```
+resource.type="cloudsql_database"
+resource.labels.database_id="formal-scout-402706:hadr-demo-pg"
+logName=("projects/formal-scout-402706/logs/cloudsql.googleapis.com%2Fpostgres.log" OR "projects/formal-scout-402706/logs/cloudaudit.googleapis.com%2Fdata_access")
 ```
 
 ![](_attachments/Pasted%20image%2020231028221721.png)
@@ -431,7 +440,7 @@ region: `ap-southeast-1`
 <https://docs.aws.amazon.com/general/latest/gr/cwl_region.html>
 
 
-## Templates
+## Templates/USC key attributes
 ### GCP CloudSQL MySQL
 
 #### GCP PubSub
@@ -442,6 +451,8 @@ asset_display_name: `my_gcp_mysql_pubsub_display_name`
 pubsub_subscription: `projects/your-gcp-project/subscriptions/some-mysql-subscription`
 audit_type: `MYSQL`
 Server Port: `443`
+Server IP: `1.2.3.4` (fake ip)
+Server Hostname: `pubsub.googleapis.com`
 auth_mechanism: `service_account`
 
 Example:
@@ -458,6 +469,8 @@ asset_display_name: `my_gcp_mysql_display_name`
 auth_mechanism: `password`
 logs_destination_asset_id: `projects/my-gcp-project/subscriptions/my-mysql-subscription`
 server_port: `3306`
+Server IP: `1.2.3.4` (fake ip)
+Server hostname: `4.3.2.1.bc.googleusercontent.com`
 database_name: `mysql`
 
 Optional (leave them empty or default value):
@@ -1513,3 +1526,6 @@ Now go to the job schedule, you can select the newly created template
 After ReplicaSet, both pair share the same jsonar_uid, only difference is the host_name IP.
 ![](_attachments/Pasted%20image%2020231102210214.png)
 if you are trying to access the DR node (the hub/dr, the gw/dr) you will receive this error message.
+
+HADR - Eventhub/LogGroup/PubSub.
+HADR - Managed Service Type.
