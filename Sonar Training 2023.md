@@ -1486,6 +1486,6 @@ Now go to the job schedule, you can select the newly created template
 ### Playbook
 Get Assets.
 
-### Mailserver setup
+### email server setup
 refer to the github for installation in your env.
 https://github.com/mail-in-a-box/mailinabox
