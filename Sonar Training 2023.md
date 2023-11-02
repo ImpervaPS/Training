@@ -1474,6 +1474,26 @@ $JSONAR_BASEDIR/bin/mongoimport --host localhost --port 27117 --db sonargd --col
 --username admin --password "YourStrongPassword" --authenticationDatabase admin --jsonArray
 ```
 
+### Playbook
+Get Assets.
+
+### email server setup
+refer to the github for installation in your env.
+https://github.com/mail-in-a-box/mailinabox
+
+### email account configuration in dsf
+`$ source /etc/sysconfig/jsonar`  
+`$ sudo $JSONAR_BASEDIR/bin/sonarg-setup email view`
+
+`$ sudo $JSONAR_BASEDIR/bin/sonarg-setup email set`
+
+```
+$JSONAR_BASEDIR/bin/sonarg-setup email view
+
+Running sonarg-setup email
+
+Admin email information in data base: {'ssl': True, 'user': 'audit@impervaps.hcl', 'password': '*****', 'host': 'box.impervaps.hcl', 'port': 587, 'fromEmail': 'audit@impervaps.hcl', 'email': 'audit@impervaps.hcl', 'uri': 'smtps://audit%40impervaps.hcl:*****@box.impervaps.hcl:587/?email=audit@impervaps.hcl&fromEmail=audit@impervaps.hcl'}
+```
 ### Email template
 Insert your email template into the collection:
 Source collection: `lmrm__scheduler-lmrm__email_templates`
@@ -1483,9 +1503,3 @@ You need to index this firstly:
 Now go to the job schedule, you can select the newly created template
 ![](_attachments/Pasted%20image%2020231102071057.png)
 
-### Playbook
-Get Assets.
-
-### email server setup
-refer to the github for installation in your env.
-https://github.com/mail-in-a-box/mailinabox
