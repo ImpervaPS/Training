@@ -1243,7 +1243,7 @@ INSERT INTO transaction (dining_time, guest_name, person_number, credit_card) VA
 
 ```
 
-### PostgreSQL
+### PostgreSQL Script
 Credit Card Table
 
 ```
@@ -1507,3 +1507,9 @@ You need to index this firstly:
 Now go to the job schedule, you can select the newly created template
 ![](_attachments/Pasted%20image%2020231102071057.png)
 
+### HADR
+
+![](_attachments/Pasted%20image%2020231102205115.png)
+After ReplicaSet, both pair share the same jsonar_uid, only difference is the host_name IP.
+![](_attachments/Pasted%20image%2020231102210214.png)
+if you are trying to access the DR node (the hub/dr, the gw/dr) you will receive this error message.
