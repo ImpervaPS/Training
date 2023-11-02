@@ -1482,3 +1482,10 @@ You need to index this firstly:
 ![](_attachments/Pasted%20image%2020231102070852.png)
 Now go to the job schedule, you can select the newly created template
 ![](_attachments/Pasted%20image%2020231102071057.png)
+
+### Playbook
+Get Assets.
+
+### Mailserver setup
+refer to the github for installation in your env.
+https://github.com/mail-in-a-box/mailinabox
