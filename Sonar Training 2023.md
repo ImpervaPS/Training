@@ -21,7 +21,7 @@ Check the firewall that allow **port 8443 & 22** open to your current IP and to 
 GOTO 'Firewall' to configure
 
 ```
-## howto check your current IP address
+# howto check your current IP address
 curl ifconfig.me
 ```
 
@@ -175,7 +175,7 @@ mv xxx.json $JSONAR_LOCALDIR/credentials/xxx.json
 sudo chown sonarw.sonar xxx.json
 sudo chmod 644 xxx.json
 
-## make sure it has the correct permission
+# make sure it has the correct permission
 ls -ltr
 total 4
 -rw-rw-r--. 1 sonarw sonar 2368 Oct 28 13:23 xxx.json
@@ -296,7 +296,7 @@ Connect to the RDS using DBeaver.
 Create the role and extension to write log to logGroup
 ```
 CREATE ROLE rds_pgaudit;
-## Reboot the DB instance.
+# Reboot the DB instance.
 SHOW shared_preload_libraries;
 CREATE EXTENSION pgaudit;
 ```
@@ -536,7 +536,7 @@ gpgkey=https://www.mongodb.org/static/pgp/server-4.4.asc
 sudo yum install -y mongodb-enterprise
 sudo systemctl start mongod
 sudo systemctl enable mongod
-## Next, execute the command to initiate the db session.
+# Next, execute the command to initiate the db session.
 mongo
 ```
 
@@ -568,7 +568,7 @@ Log rotation part(optional):
 Using the default admin user to create user that has root role
 
 ```sh
-## run mongo command to start session
+# run mongo command to start session
 [root@mvp ~]# mongo
 MongoDB shell version v4.4.25
 connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
@@ -577,30 +577,30 @@ MongoDB server version: 4.4.25
 MongoDB Enterprise > use admin;
 switched to db admin
 
-## run command to creat user that has root role
+# run command to creat user that has root role
 db.createUser({
    user: "root",
    pwd: "default",
    roles: ["root"]
 });
 
-## exit mongo and restart mongod
+# exit mongo and restart mongod
 systemctl restart mongod
 
-## Should you receive the error as shown below:
+# Should you receive the error as shown below:
 MongoDB shell version v4.4.25
 connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
 Error: couldn't connect to server 127.0.0.1:27017, connection attempt failed: SocketException: Error connecting to 127.0.0.1:27017 :: caused by :: Connection refused :
 connect@src/mongo/shell/mongo.js:374:17
 
-## try this command to solve:
+# try this command to solve:
 
 ls -l /tmp/mongodb-27017.sock
-## If the file exists, you should remove it and restart mongod
+# If the file exists, you should remove it and restart mongod
 sudo rm /tmp/mongodb-27017.sock
 sudo systemctl restart mongod
 
-## login using root role and run the log rotation command
+# login using root role and run the log rotation command
 [root@mvp mongo]# mongo -u root -p
 MongoDB shell version v4.4.25
 Enter password: 
@@ -720,7 +720,7 @@ Download the preinstall rpm package
 ```bash
 curl -o oracle-database-preinstall-19c-1.0-1.el7.x86_64.rpm https://yum.oracle.com/repo/OracleLinux/OL7/latest/x86_64/getPackage/oracle-database-preinstall-19c-1.0-1.el7.x86_64.rpm
 
-## or use the rpm in s3 bucket
+# or use the rpm in s3 bucket
 curl -o oracle-database-preinstall-19c-1.0-1.el7.x86_64.rpm http://impervaps.s3-website-ap-southeast-1.amazonaws.com/ftp-downloads/training_installation_db/oracle_19c/oracle-database-preinstall-19c-1.0-1.el7.x86_64.rpm
 
 sudo yum -y localinstall oracle-database-preinstall-19c-1.0-1.el7.x86_64.rpm
@@ -772,22 +772,22 @@ Configure the bash_profile of oracle account
 sudo su
 su oracle
 vi ~/.bash_profile
-## append these lines to the profile:
+# append these lines to the profile:
 export ORACLE_HOME=/opt/oracle/product/19c/dbhome_1
 export PATH=$PATH:/opt/oracle/product/19c/dbhome_1/bin
 export ORACLE_SID=ORCLCDB
 
-## then source the profile
+# then source the profile
 source ~/.bash_profile
 
-## Create PLUGGABLE DATABASE
+# Create PLUGGABLE DATABASE
 
-## Create the pdb file named playground
+# Create the pdb file named playground
 mkdir /opt/oracle/oradata/ORCLCDB/playground
-## (optional) check the ownership of this folder. make sure it's oracle.oinstall
+# (optional) check the ownership of this folder. make sure it's oracle.oinstall
 chown oracle.oinstall opt/oracle/oradata/ORCLCDB/playground
 
-## running the sqlplus
+# running the sqlplus
 [oracle@dbs ~]$ sqlplus /nolog
 
 SQL*Plus: Release 19.0.0.0.0 - Production on Mon Oct 23 08:43:00 2023
@@ -799,7 +799,7 @@ SQL> conn sys/sys as sysdba
 Connected to an idle instance.
 SQL> startup
 
-## update the password
+# update the password
 SQL> alter user system identified by system; 
 ```
 
@@ -811,11 +811,11 @@ CON_NAME
 ------------------------------
 CDB$ROOT
 
-## Create PDB using the pdbseed file and create the ADMIN USER superdemo
+# Create PDB using the pdbseed file and create the ADMIN USER superdemo
 
 SQL> CREATE PLUGGABLE DATABASE playground ADMIN USER superdemo IDENTIFIED BY superdemo FILE_NAME_CONVERT = ('/opt/oracle/oradata/ORCLCDB/pdbseed/', '/opt/oracle/oradata/ORCLCDB/playground/');
 
-## Show connection and change it to PDB playground
+# Show connection and change it to PDB playground
 
 SQL> alter session set container=playground;
 SQL> alter database open;
@@ -844,7 +844,7 @@ INSERT INTO cities (city_id, city_name) VALUES (3, 'Paris');
 Configure the audit policy and audit user 
 ```
 SQL> ALTER SESSION SET CONTAINER = CDB$ROOT;
-##Create Audit Pull User:
+#Create Audit Pull User:
 CREATE USER c##auditmanager IDENTIFIED BY "P@ssw0rd";
 GRANT CREATE SESSION TO c##auditmanager;
 
@@ -853,7 +853,7 @@ ALTER USER c##auditmanager SET container_data=all CONTAINER = CURRENT;
 GRANT SELECT ON sys.v_$pdbs TO c##auditmanager;
 GRANT SELECT ON V_$DATABASE TO c##auditmanager;
 
-##Create the Audit Management User
+#Create the Audit Management User
 
 CREATE USER c##auditpolicy IDENTIFIED BY "P@ssw0rd";
 GRANT CREATE SESSION TO c##auditpolicy;
@@ -866,22 +866,22 @@ GRANT SELECT ON V_$PARAMETER to c##auditpolicy;
 
 Check the auditing mode:
 ```
-## True means 'pure unified', false means 'mixed mode'
+# True means 'pure unified', false means 'mixed mode'
 SQL> SELECT VALUE FROM V$OPTION WHERE PARAMETER = 'Unified Auditing';
 
 VALUE
 ----------------------------------------------------------------
 FALSE
 
-## we will configure the auditing to mixed mode. Run SQL command as sys.
+# we will configure the auditing to mixed mode. Run SQL command as sys.
 SQL> ALTER SYSTEM SET audit_trail=DB,EXTENDED scope=SPFILE;
 ALTER SYSTEM SET audit_sys_operations=true scope=SPFILE;
 AUDIT CONTEXT NAMESPACE USERENV ATTRIBUTES db_name, service_name;
-## restart the database
+# restart the database
 SHUTDOWN IMMEDIATE;
 STARTUP;
 
-## Show parameters to verify
+# Show parameters to verify
 SQL> SHOW PARAMETERS audit;
 audit_trail     string DB, EXTENDED
 
@@ -916,7 +916,7 @@ Check the service name, should be the $root, i.e. orclcdb.
 
 Configure the MongoCompass
 ```
-## find the bind_ip
+# find the bind_ip
 [root@dsfhub413 ~]# locate sonard.conf
 /opt/jsonar/apps/4.13.0.10.0/etc/sonar/sonard.conf
 /opt/jsonar/local/sonarw/sonard.conf
@@ -940,7 +940,7 @@ db.inventory.insertMany([
 ]);
 show dbs;
 show collections;
-## select the first 2 documents
+# select the first 2 documents
 db.inventory.find().limit(2).pretty()
 { _id: ObjectId("653741495a05e27d8fd07aa3"),
   item: 'journal',
@@ -953,16 +953,16 @@ db.inventory.find().limit(2).pretty()
   size: { h: 8.5, w: 11, uom: 'in' },
   status: 'A' }
 
-## find/update/delete with condition
+# find/update/delete with condition
 
-## delete with condition
+# delete with condition
 condition: {item: "notebook"}
 db.inventory.deleteOne({ item: "notebook" })
 
-##If you intend to delete all documents matching the condition, you can use the deleteMany() method instead.
+#If you intend to delete all documents matching the condition, you can use the deleteMany() method instead.
 db.inventory.deleteMany({ status: "A" })
 
-## Condition is case sensitive. so make no mistake when deleteMany().
+# Condition is case sensitive. so make no mistake when deleteMany().
 db.inventory.deleteMany({status: "d"})
 { acknowledged: true, deletedCount: 0 }
 db.inventory.deleteMany({status: "D"})
@@ -970,7 +970,7 @@ db.inventory.deleteMany({status: "D"})
 ```
 add more operations to update:
 ```
-## suppose you want to update the stauts:
+# suppose you want to update the stauts:
 db.inventory.updateOne({"item":"paper"}, {$set: {"status":"B"}})
 ```
 
@@ -998,7 +998,7 @@ Between, it only affects the first date. Edit the second date to make a change.
 
 Or the relative to when the query runs
 ```
-## You may want the query to filter based on dates relative to when the query runs
+# You may want the query to filter based on dates relative to when the query runs
 $$LMRM_NOW for the time the query runs
 $$LMRM_NOW-10DAYS  + or – days (even if one day)
 $$LMRM_NOW-60000 means 60 seconds (number is in milliseconds) 
@@ -1527,5 +1527,52 @@ After ReplicaSet, both pair share the same jsonar_uid, only difference is the ho
 ![](_attachments/Pasted%20image%2020231102210214.png)
 if you are trying to access the DR node (the hub/dr, the gw/dr) you will receive this error message.
 
-HADR - Eventhub/LogGroup/PubSub.
-HADR - Managed Service Type.
+HADR - Sonar Pull the logs from Eventhub/LogGroup/PubSub.
+HADR - Sonar Receive the logs from Managed Service Logs, such as the rsyslog services.
+
+### Install Aerospike
+
+[https://aerospike.com/download/#tools](https://aerospike.com/download/#tools)
+select the corresponding version:
+RHEL8 : https://enterprise.aerospike.com/enterprise/download/server/6.4.0/artifact/el8_amd64
+
+```
+curl -o aerospike.tgz https://download.aerospike.com/artifacts/aerospike-server-enterprise/6.4.0/aerospike-server-enterprise_6.4.0.6_tools-9.2.1_el8_x86_64.tgz
+
+tar -xvf aerospike.tgz -C /opt/
+cd /opt/aerospike-server-enterprise_6.4.0.6_tools-9.2.1_el8_x86_64/
+sudo ./asinstall
+systemctl start aerospike
+systemctl enable aerospike
+#
+[root@aerospike ~]# aql
+Seed:         127.0.0.1
+User:         None
+Config File:  /etc/aerospike/astools.conf /root/.aerospike/astools.conf 
+Aerospike Query Client
+Version 8.4.0
+```
+
+Audit log
+`/etc/aerospike/aerospike.conf`
+
+add the configuration:
+```
+logging {
+        file /var/log/aerospike/aerospike.log {
+            context any info
+        }
+
+        console {
+            context any info
+        }
+}
+```
+
+```
+# Manually create the file
+sudo mkdir -p /var/log/aerospike && sudo touch /var/log/aerospike/aerospike.log
+sudo systemctl restart aerospike
+sudo systemctl status aerospike
+```
+
