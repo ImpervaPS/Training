@@ -1553,26 +1553,48 @@ Aerospike Query Client
 Version 8.4.0
 ```
 
-Audit log
-`/etc/aerospike/aerospike.conf`
-
-add the configuration:
 ```
-logging {
-        file /var/log/aerospike/aerospike.log {
-            context any info
-        }
-
-        console {
-            context any info
-        }
-}
-```
-
-```
-# Manually create the file
+# Manually create the audit log file
 sudo mkdir -p /var/log/aerospike && sudo touch /var/log/aerospike/aerospike.log
 sudo systemctl restart aerospike
 sudo systemctl status aerospike
 ```
 
+Audit log configuration in `/etc/aerospike/aerospike.conf`
+```
+logging {
+        file /var/log/aerospike/aerospike.log {
+            context any critical
+            context audit info
+        }
+# could enable the syslog service.
+        syslog {
+            facility local0
+            tag aerospike-audit
+            context any critical
+            context audit info
+        }
+}
+
+security {
+    log {
+        report-authentication true
+        report-user-admin true
+        report-sys-admin true
+        report-violation true
+        report-data-op test demoset # report successful data transactions on set "demoset" in namespace "test"
+    }
+}
+```
+
+- With the security stanza enabled, you must provide a username and password to authenticate successfully.
+-  **Aerospike EE**: Log in with the default username _admin_ and password _admin_.
+```
+[root@aerospike aerospike]# aql -U admin -P admin
+Seed:         localhost:cluster_a:3000
+User:         admin
+Config File:  /etc/aerospike/astools.conf /root/.aerospike/astools.conf 
+Aerospike Query Client
+Version 8.4.0
+aql> 
+```
