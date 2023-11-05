@@ -1511,6 +1511,8 @@ Running sonarg-setup email
 
 Admin email information in data base: {'ssl': True, 'user': 'audit@impervaps.hcl', 'password': '*****', 'host': 'box.impervaps.hcl', 'port': 587, 'fromEmail': 'audit@impervaps.hcl', 'email': 'audit@impervaps.hcl', 'uri': 'smtps://audit%40impervaps.hcl:*****@box.impervaps.hcl:587/?email=audit@impervaps.hcl&fromEmail=audit@impervaps.hcl'}
 ```
+Incase you want to modify, use USC:
+![](_attachments/Pasted%20image%2020231105172450.png)
 ### Email template
 Insert your email template into the collection:
 Source collection: `lmrm__scheduler-lmrm__email_templates`
@@ -1587,6 +1589,10 @@ security {
 }
 ```
 
+```
+# disable selinux on aerospike before moving on
+```
+
 - With the security stanza enabled, you must provide a username and password to authenticate successfully.
 -  **Aerospike EE**: Log in with the default username _admin_ and password _admin_.
 ```
@@ -1597,4 +1603,13 @@ Config File:  /etc/aerospike/astools.conf /root/.aerospike/astools.conf
 Aerospike Query Client
 Version 8.4.0
 aql> 
+```
+
+bash: asadm
+enable
+```
+Admin+> manage acl create role superusers priv read-write-udf
+Successfully created role superusers.
+Admin+> manage acl create user bob password bobpass roles superusers
+Successfully created user bob.
 ```
