@@ -1005,7 +1005,7 @@ $$LMRM_NOW-60000 means 60 seconds (number is in milliseconds)
 
 "Period Start" : {$gt: "$$LMRM_NOW-5DAYS"}
 1 Hour
-{$gte: "$$LMRM_NOW-36000000"}
+{$gte: "$$LMRM_NOW-3600000"}
 10 Minutes
 {$gte: "$$LMRM_NOW-600000"}
 ```
