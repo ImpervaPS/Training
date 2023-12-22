@@ -22,15 +22,15 @@ tmpfs                  3.2G  4.0K  3.2G   1% /run/user/1000
 Clearly we don't have enough space in root. So the plan is to allocate 140G from /dev/mapper/rhel-home to /dev/mapper/rhel-root.
 
 Run the command using root in this order:
-```sh
---01-backup the /home folder
+```sh using root@xxxx
+# 01-backup the /home folder
 tar -cvf /tmp/home.tar /home
 
---02-umount /home
+# 02-umount /home
 cd /tmp
 umount /home
 
---02b-error
+# 02b-error
 [root@dsfhub413 /]# umount /home
 umount: /home: target is busy.
 

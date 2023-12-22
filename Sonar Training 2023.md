@@ -1148,6 +1148,18 @@ collection: `table`
 ## CDP
 https://docs.cloudera.com/cdp-private-cloud-base/7.1.7/installation/topics/cdpdc-trial-installation.html
 
+```
+# 7.4.4 is the CDP 7.1.7 version.
+$ wget https://archive.cloudera.com/cm7/7.4.4/cloudera-manager-installer.bin
+$ chmod u+x cloudera-manager-installer.bin
+
+$ sudo ./cloudera-manager-installer.bin
+```
+reinstall on the cdp manager node if necessary:
+```
+sudo /opt/cloudera/installer/uninstall-cloudera-manager.sh
+
+```
 ## Supplementary information
 
 ### MySQL SQL Script
