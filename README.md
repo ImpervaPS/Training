@@ -1,5 +1,5 @@
 # Training
-Public Learning Material
+Public Learning Material for now.
 
 Please refer to the specific documentation.
 
